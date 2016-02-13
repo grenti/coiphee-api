@@ -1,8 +1,8 @@
 {
   "ecmaFeatures": {
     "binaryLiterals": false,                    // enable binary literals
-    "blockBindings": false,                     // enable let and const (aka block bindings)
-    "defaultParams": false,                     // enable default function parameters
+    "blockBindings": true,                     // enable let and const (aka block bindings)
+    "defaultParams": true,                     // enable default function parameters
     "forOf": true,                             // enable for-of loops
     "generators": true,                        // enable generators
     "objectLiteralComputedProperties": true,   // enable computed object literal property names
@@ -14,7 +14,7 @@
     "regexYFlag": false,                        // enable the regular expression y flag
     "templateStrings": true,                   // enable template strings
     "unicodeCodePointEscapes": false,           // enable code point escapes
-    "jsx": true                                // enable JSX
+    "jsx": false                                // enable JSX
   },
 
   "env": {
@@ -28,13 +28,13 @@
     "prototypejs": false, // prototypejs global variables.
     "shelljs": false,     // shelljs global variables.
   },
-
-  "globals": {
     // e.g. "angular": true
-  },
+  "globals": {
 
+  },
+  // e.g. "react" (must run `npm install eslint-plugin-react` first)
   "plugins": [
-    // e.g. "react" (must run `npm install eslint-plugin-react` first)
+
   ],
 
   "rules": {
