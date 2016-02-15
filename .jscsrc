@@ -1,3 +1,11 @@
 {
-  "preset": "airbnb"
+  "preset": "google",
+  "esnext": true,
+  "disallowSpacesInsideObjectBrackets": null,
+  "maximumLineLength": 120,
+  "jsDoc": {
+    "checkAnnotations": "closurecompiler",
+    "checkTypes": "strictNativeCase",
+    "enforceExistence": "exceptExports"
+  }
 }
