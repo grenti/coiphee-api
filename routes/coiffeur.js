@@ -14,10 +14,10 @@ const path = routeBuilder('coiffeurs');
 function coiffeurRoute(router) {
   router
   .get(path, function *(next) {
-    this.body = { message: 'test it is working!' };
+    this.body = { message: 'Gettin\' all dem coiffeurs!' };
   })
   .get(`${path}/:id`, function *(id, next) {
-    this.body = { message: `Got one coiffeur ${this.params.id}` };
+    this.body = { message: `Got coiffeur #${this.params.id}` };
   })
   .post(path, function *(next) {
     this.body = { name: 'Joe Bloe\'s Barbershop' };
