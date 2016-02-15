@@ -1,4 +1,3 @@
-'use strict';
 
 var staging = {
   mongo: {

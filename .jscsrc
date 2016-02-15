@@ -1,4 +1,10 @@
 {
   "preset": "google",
-  "esnext": true
+  "esnext": true,
+  "disallowSpacesInsideObjectBrackets": null,
+  "jsDoc": {
+    "checkAnnotations": "closurecompiler",
+    "checkTypes": "strictNativeCase",
+    "enforceExistence": "exceptExports"
+  }
 }
