@@ -6,6 +6,7 @@
 // })
 const routeBuilder = require('./routeBuilder');
 const path = routeBuilder('coiffeurs');
+// const Coiffeur = require('../models/coiffeur');
 
 /**
  * Adds two numbers together
@@ -21,6 +22,11 @@ function coiffeurRoute(router) {
   })
   .post(path, function *(next) {
     this.body = { name: 'Joe Bloe\'s Barbershop' };
+  })
+  .put(`${path}/:id`, function *(next) {
+    const id = this.params.id;
+    let editedCoiffeur = this.
+    this.body = {};
   });
 }
 
