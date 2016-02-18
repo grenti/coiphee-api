@@ -24,8 +24,8 @@ function coiffeurRoute(router) {
     this.body = { name: 'Joe Bloe\'s Barbershop' };
   })
   .put(`${path}/:id`, function *(next) {
-    const id = this.params.id;
-    let editedCoiffeur = this.
+    // const id = this.params.id;
+    // let editedCoiffeur = this.
     this.body = {};
   });
 }
