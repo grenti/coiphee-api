@@ -1,8 +1,13 @@
 {
+    "parserOptions": {
+      "ecmaVersion": 6
+    },
     "extends": "standard",
     "env": {
       "node": true,
-      "es6": true
+      "es6": true,
+      "jasmine": true,
+      "mocha": true
     },
     "rules": {
       "semi": 0,

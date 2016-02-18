@@ -21,7 +21,10 @@ let coiffeurSchema = new Schema({
     zip: { type: String, required: true }
   },
   proficiencies: [String],
-  amenities: [String]
+  amenities: [{
+    name: { type: String, required: true },
+    offering: [{ type: String }]
+  }]
 });
 
 module.exports = mongoose.model('Coiffeur', coiffeurSchema);

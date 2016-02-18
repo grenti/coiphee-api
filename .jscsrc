@@ -6,6 +6,8 @@
   "jsDoc": {
     "checkAnnotations": "closurecompiler",
     "checkTypes": "strictNativeCase",
-    "enforceExistence": "exceptExports"
+    "enforceExistence": {
+      "allExcept": ["exports", "arrow"]
+    }
   }
 }
