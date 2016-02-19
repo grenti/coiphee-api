@@ -48,8 +48,7 @@ gulp.task('run', () => {
 gulp.task('test', () => {
   return gulp.src(['**/*.spec.js'], { base: 'tests' })
         .pipe(mocha({
-          reporter: 'nyan',
-          env: 'test'
+          reporter: 'nyan'
         }))
         .once('error', function() {
           process.exit(1);

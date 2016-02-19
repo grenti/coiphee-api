@@ -10,11 +10,11 @@ chai.use(chaiHttp);
 const serverUri = `${config.api.url}:${config.port}`;
 console.log(`Server Uri: ${serverUri}`);
 
-describe('Coiffeurs', () => {
-  it('should list all coiffeurs on /coiffeurs GET', (done) => {
-    chai.request('http://localhost:5000')
+describe('Coiffeurs', function() {
+  it('should list all coiffeurs on /coiffeurs GET', function(done) {
+    chai.request(serverUri)
       .get(routeBuilder('coiffeurs'))
-      .end((err, res) => {
+      .end(function(err, res) {
         should.not.exist(err);
         res.should.have.status(200);
         done();
