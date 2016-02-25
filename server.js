@@ -1,4 +1,5 @@
 
+const body = require('koa-body');
 const koa = require('koa.io');
 const app = koa();
 const path = require('path');
@@ -24,6 +25,9 @@ const log = bunyan.createLogger({
 app.on('error', (err, context) => {
   log.info(`Server error: ${err}\nContext: ${context}`);
 });
+
+// request body parser
+app.use(body({formidable: {uploadDir: path.resolve(__dirname, '/uploads')}}));
 
 // x-response-time
 app.use(function *(next) {

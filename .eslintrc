@@ -12,7 +12,8 @@
     "rules": {
       "semi": 0,
       "space-infix-ops": [2, {"int32Hint": false}],
-      "space-before-function-paren": 0
+      "space-before-function-paren": 0,
+      "jsx-quotes": 1
     },
     "plugins": [
         "standard",

@@ -1,7 +1,6 @@
-'use strict';
-
-let Coiffeur = require('../models/coiffeur');
-
-function coiffeurSocketRegister(io) {
-  
-}
+//
+// const Coiffeur = require('../models/coiffeur');
+//
+// function coiffeurSocketRegister(io) {
+//
+// }
