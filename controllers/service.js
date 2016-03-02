@@ -1,23 +1,15 @@
-
 'use strict';
 
-const Coiffeur = require('../models/coiffeur');
+const Service = require('../models/service');
 const Logger = require('bunyan');
-const log = new Logger({name: 'CoiffeurController'});
+const log = new Logger({name: 'ServiceController'});
 
-/**
- * Coiffeur Controller for Coiffeur routes
- *
- * @class
- * @type {CoiffeurController}
- */
-class CoiffeurController {
+class ServiceController {
   * getAll(next) {
     try {
-      this.body = yield Coiffeur.find({}).exec();
+      this.body = yield Service.find({}).exec();
     } catch (e) {
       this.status = 500;
-      console.error(e);
       log.error(e);
     } finally {
       yield next;
@@ -26,10 +18,9 @@ class CoiffeurController {
 
   * get(next) {
     try {
-      this.body = yield Coiffeur.find({_id: this.params.id}).exec();
+      this.body = yield Service.find({_id: this.params.id}).exec();
     } catch (e) {
       this.status = 500;
-      console.error(e);
       log.error(e);
     } finally {
       yield next;
@@ -38,12 +29,11 @@ class CoiffeurController {
 
   * create(next) {
     try {
-      var newCoiffeur = new Coiffeur(this.request.body);
-      this.body = yield newCoiffeur.save();
+      let newService = new Service(this.request.body);
+      this.body = yield newService.save();
       this.status = 201;
     } catch (e) {
       this.status = 500;
-      console.error(e);
       log.error(e);
     } finally {
       yield next;
@@ -52,30 +42,26 @@ class CoiffeurController {
 
   * update(next) {
     try {
-      yield Coiffeur
+      yield Service
         .findByIdAndUpdate({_id: this.params.id}, this.request.body).exec();
-      this.status = 201;
     } catch (e) {
       this.status = 500;
-      console.error(e);
       log.error(e);
     } finally {
       yield next;
     }
-  };
+  }
 
   * remove(next) {
     try {
-      yield Coiffeur.findByIdAndRemove({_id: this.params.id}).exec();
-      this.status = 200;
+      yield Service.findByIdAndRemove({_id: this.params.id}).exec();
     } catch (e) {
       this.status = 500;
-      console.error(e);
       log.error(e);
     } finally {
       yield next;
     }
-  };
+  }
 }
 
-module.exports = new CoiffeurController();
+module.exports = new ServiceController();

@@ -1,14 +1,15 @@
 'use strict';
 
 const routeBuilder = require('./routeBuilder');
-const path = routeBuilder('shoppes');
-const Controller = require('../controllers/shoppe');
+const path = routeBuilder('services');
+const Controller = require('../controllers/service');
 
 /**
- * configures routes for shoppes
+ * Configures route for services model
+ *
  * @param {Router} router
  */
-function shoppeRoute(router) {
+function serviceRoute(router) {
   router
     .get(path, Controller.getAll)
     .get(`${path}/:id`, Controller.get)
@@ -17,4 +18,4 @@ function shoppeRoute(router) {
     .delete(`${path}/:id`, Controller.remove);
 }
 
-module.exports = shoppeRoute;
+module.exports = serviceRoute;

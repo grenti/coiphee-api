@@ -12,6 +12,7 @@ const Controller = require('../controllers/coiffeur');
 
 /**
  * Adds two numbers together
+ *
  * @param {Router} router
  */
 function coiffeurRoute(router) {

@@ -60,10 +60,16 @@ app.context.db = mongoose;
 
 app.use(favicon(path.join(__dirname, '/favicon.ico')));
 const homeRoute = require('./routes/home');
-const coifferRoute = require('./routes/coiffeur');
+const coifferRoute = require('./routes/coiffeurs');
+const serviceCategoryRoute = require('./routes/serviceCategories');
+const serviceRoute = require('./routes/services');
+const shoppeRoute = require('./routes/shoppes');
 
 homeRoute(router);
 coifferRoute(router);
+serviceCategoryRoute(router);
+serviceRoute(router);
+shoppeRoute(router);
 
 app
   .use(router.routes())

@@ -4,6 +4,7 @@ const path = routeBuilder('/');
 const content = `Welcome to Coiphee's api home!\n\nCome in, let's get you coiffed!`;
 /**
  * Adds two numbers together
+ *
  * @param {Router} router
  */
 function homeRoute(router) {
