@@ -80,3 +80,5 @@ app.io.route('happen', function *(next) {
 app.listen(config.port, function() {
   console.log(`server running on port ${config.port}`);
 });
+
+module.exports = app;

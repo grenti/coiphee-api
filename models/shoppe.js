@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const shopSchema = new Schema({
+const shoppeSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String },
   phone: [{
@@ -31,4 +31,4 @@ const shopSchema = new Schema({
   services: [{ type: Schema.Types.ObjectId, ref: 'Services' }]
 });
 
-module.exports = mongoose.model('Shop', shopSchema);
+module.exports = mongoose.model('Shop', shoppeSchema);

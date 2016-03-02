@@ -42,8 +42,8 @@ gulp.task('lint', () => {
  */
 gulp.task('run', () => {
   nodemon({
-    script: paths.entry,
-    ext: 'html js',
+    script: paths.entry, //`${paths.entry} | ./node_modules/.bin/bunyan`,
+    ext: 'jsx js',
     env: { 'NODE_ENV': 'development' },
     ignore: ['ignored.js'],
     tasks: ['lint']

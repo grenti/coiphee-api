@@ -2,12 +2,5 @@
   "preset": "google",
   "esnext": true,
   "disallowSpacesInsideObjectBrackets": null,
-  "maximumLineLength": 120,
-  "jsDoc": {
-    "checkAnnotations": "closurecompiler",
-    "checkTypes": "strictNativeCase",
-    "enforceExistence": {
-      "allExcept": ["exports", "arrow"]
-    }
-  }
+  "maximumLineLength": 120
 }

@@ -1,9 +1,11 @@
 
 const Coiffeur = require('../models/coiffeur');
 const Logger = require('bunyan');
-const log = new Logger({name: 'CoiffeurRoute'});
+const log = new Logger({name: 'CoiffeurController'});
+
 /**
  * Coiffeur Controller for Coiffeur routes
+ *
  * @class
  * @type {CoiffeurController}
  */
@@ -73,26 +75,5 @@ CoiffeurController.prototype.remove = function *(next) {
     yield next;
   }
 };
-
-// CoiffeurController.prototype.getAll = function *() {
-//   return yield Coiffeur.find({}).exec();
-// };
-//
-// CoiffeurController.prototype.get = function *(id) {
-//   return yield Coiffeur.find({_id: id}).exec();
-// };
-//
-// CoiffeurController.prototype.create = function *(coiffeur) {
-//   var newCoiffeur = new Coiffeur(coiffeur);
-//   return yield newCoiffeur.save();
-// };
-//
-// CoiffeurController.prototype.update = function *(coiffeur) {
-//   yield Coiffeur.findByIdAndUpdate({_id: coiffeur._id}, coiffeur).exec();
-// };
-//
-// CoiffeurController.prototype.remove = function *(id) {
-//   yield Coiffeur.findByIdAndRemove({_id: id}).exec();
-// };
 
 module.exports = new CoiffeurController();

@@ -1,13 +1,19 @@
 'use strict';
+
 process.env.NODE_ENV = 'test';
 const config = require('../../config');
-const faker = require('faker');
+const factory = require('../factories/coiffeur');
 const Coiffeur = require('../../models/coiffeur');
 const mongooseConfig = require('../mongooseConfig');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const routeBuilder = require('../../routes/routeBuilder');
 const should = chai.should();
+
+const server = require('../../server');
+const http = require('http');
+// run the server locally for a test instance
+http.createServer(server.callback()).listen(config.port);
 
 chai.use(chaiHttp);
 const serverUri = `${config.api.url}:${config.port}`;
@@ -16,37 +22,11 @@ var savedCoiffeurs = [];
 
 mongooseConfig();
 
-function prototypeCoiffeur() {
-  return {
-    name: {
-      first: faker.name.firstName(),
-      last: faker.name.lastName()
-    },
-    license: [String],
-    phone: [{
-      type: 'home',
-      number: faker.phone.phoneNumber()
-    }],
-    location: {
-      street: faker.address.streetName(),
-      addtional: faker.address.secondaryAddress(),
-      city: faker.address.city(),
-      state: faker.address.stateAbbr(),
-      zip: faker.address.zipCode()
-    },
-    proficiencies: faker.lorem.words(),
-    amenities: [{
-      name: faker.lorem.words(),
-      offering: [faker.lorem.words(), faker.lorem.words()]
-    }]
-  };
-}
-
 describe('Coiffeurs', function() {
   before(function(done) {
     var coiffeurs = [];
     for (let i = 0; i < 15; i++) {
-      coiffeurs.push(prototypeCoiffeur());
+      coiffeurs.push(factory.build());
     }
 
     Coiffeur.insertMany(coiffeurs, function(err, docs) {
@@ -86,7 +66,7 @@ describe('Coiffeurs', function() {
   it('should create one coiffeur on /coiffeurs POST', function(done) {
     chai.request(serverUri)
       .post(routeBuilder('coiffeurs'))
-      .send(prototypeCoiffeur())
+      .send(factory.build())
       .end(function(err, res) {
         should.not.exist(err);
         res.should.have.status(201);

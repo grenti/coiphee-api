@@ -1,5 +1,6 @@
 {
     "parserOptions": {
+      "sourceType": "module",
       "ecmaVersion": 6
     },
     "extends": "standard",
@@ -13,7 +14,8 @@
       "semi": 0,
       "space-infix-ops": [2, {"int32Hint": false}],
       "space-before-function-paren": 0,
-      "jsx-quotes": 1
+      "jsx-quotes": 1,
+      "strict": 0
     },
     "plugins": [
         "standard",
