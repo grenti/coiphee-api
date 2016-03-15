@@ -1,24 +1,35 @@
 {
-    "parserOptions": {
-      "sourceType": "module",
-      "ecmaVersion": 6
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+        "generators": true,
+        "experimentalObjectRestSpread": true
     },
-    "extends": "standard",
-    "env": {
-      "node": true,
-      "es6": true,
-      "jasmine": true,
-      "mocha": true
-    },
-    "rules": {
-      "semi": 0,
-      "space-infix-ops": [2, {"int32Hint": false}],
-      "space-before-function-paren": 0,
-      "jsx-quotes": 1,
-      "strict": 0
-    },
-    "plugins": [
-        "standard",
-        "react"
-    ]
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "worker": true,
+    "serviceworker": true,
+    "commonjs": true,
+    "mocha": true,
+  },
+  "extends": "google",
+  "parser": "esprima",
+  "rules": {
+    "max-len": [2, 120, 4, {"ignoreUrls": true}],
+    "object-curly-spacing": [2, "always"],
+    "jsx-quotes": 1,
+    "strict": 0,
+    "eol-last": 0,
+    "quotes": [2, "single"],
+    "require-jsdoc": 0,
+    "generator-star-spacing": [2, {"before": true, "after": false}]
+  },
+  "plugins": [
+    # "flow-vars"
+  ]
 }
+
