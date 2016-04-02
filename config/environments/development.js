@@ -1,7 +1,7 @@
 
 const development = {
   mongo: {
-    url: 'mongodb://localhost:27017/coiphee_dev'
+    url: 'mongodb://nodeDbApi:password@paulo.mongohq.com:10011/coiphee_dev?replicaSet=set-520a68dd2d150e6d4c0002a6'
   }
 };
 

@@ -1,6 +1,13 @@
 {
   "preset": "google",
+  "validateQuoteMarks": { "mark": "'", "escape": true, "ignoreJSX": true },
+  "maximumLineLength": 120,
+  "requireTrailingComma": false,
   "esnext": true,
-  "disallowSpacesInsideObjectBrackets": null,
-  "maximumLineLength": 120
+  "disallowSpacesInsideObjectBrackets": false,
+  "requireSpacesInsideObjectBrackets": "all",
+  "excludeFiles": [
+    "node_modules/**",
+    "coverage/**"
+  ]
 }

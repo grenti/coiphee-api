@@ -14,7 +14,9 @@ class ShoppeController {
 
   * getAll(next) {
     try {
-      this.body = yield Shoppe.find({}).exec();
+      const shoppes = yield Shoppe.find({}).exec();
+      console.log(`got to shoppe controller and returned: ${shoppes}`);
+      this.body = shoppes;
     } catch (e) {
       this.status = 500;
       log.error(e);

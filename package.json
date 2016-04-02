@@ -1,5 +1,6 @@
 {
   "name": "coiphee-api",
+  "private": true,
   "version": "0.0.1",
   "repository": "grenti/coiphee_api",
   "description": "Coiphee API application",
@@ -22,7 +23,6 @@
     "koa-favicon": "^1.2.0",
     "koa-logger": "~1.2.1",
     "koa-ratelimit": "~1.0.3",
-    "koa-resource-router": "^0.3.3",
     "koa-response-time": "~1.0.2",
     "koa-router": "^5.4.0",
     "koa.io": "0.0.3",

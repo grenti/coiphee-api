@@ -31,4 +31,4 @@ const shoppeSchema = new Schema({
   services: [{ type: Schema.Types.ObjectId, ref: 'Services' }]
 });
 
-module.exports = mongoose.model('Shop', shoppeSchema);
+module.exports = mongoose.model('Shoppe', shoppeSchema);

@@ -8,19 +8,9 @@ const router = require('koa-router')();
 const config = require('./config');
 const bunyan = require('bunyan');
 const mongoose = require('mongoose');
-const log = bunyan.createLogger({
-  name: 'coiphee-api',
-  streams: [
-    {
-      level: 'info',
-      stream: process.stdout            // log INFO and above to stdout
-    },
-    {
-      level: 'error',
-      path: 'error.log'  // log ERROR and above to a file
-    }
-  ]
-});
+
+const log = bunyan.createLogger(config.bunyan);
+require('./config/mongoose');
 
 app.on('error', (err, context) => {
   log.info(`Server error: ${err}\nContext: ${context}`);

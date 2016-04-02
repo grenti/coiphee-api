@@ -1,3 +1,4 @@
+'use strict';
 
 const path = require('path');
 const all = {
@@ -8,6 +9,12 @@ const all = {
   secrets: {
     session: 'demo-secret'
   },
+  bunyan: {
+    name: 'coiphee-api',
+    streams: [
+      { level: 'info', stream: process.stdout },
+      { level: 'error', path: 'error.log' }
+    ]},
   mongo: {
     options: {
       db: {
