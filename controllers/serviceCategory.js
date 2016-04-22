@@ -1,8 +1,8 @@
 'use strict';
 
 const Logger = require('bunyan');
-const log = new Logger({name: 'ServiceCategoryController'});
-const ServiceCategory = require('../models/servicecategory');
+const log = new Logger({ name: 'ServiceCategoryController' });
+const ServiceCategory = require('../models/serviceCategory');
 
 /**
  * ServiceCategory controller which manages actions on ServiceCategories
@@ -24,7 +24,7 @@ class ServiceCategoryController {
 
   * get(next) {
     try {
-      this.body = yield ServiceCategory.find({_id: this.params.id}).exec();
+      this.body = yield ServiceCategory.find({ _id: this.params.id }).exec();
     } catch (e) {
       this.status = 500;
       log.error(e);
@@ -48,7 +48,7 @@ class ServiceCategoryController {
   * update(next) {
     try {
       ServiceCategory
-        .findByIdAndUpdate({_id: this.params.id}, this.request.body).exec();
+        .findByIdAndUpdate({ _id: this.params.id }, this.request.body).exec();
     } catch (e) {
       this.status = 500;
       log.error(e);
@@ -60,7 +60,7 @@ class ServiceCategoryController {
   * remove(next) {
     try {
       ServiceCategory
-        .findByIdAndRemove({_id: this.params.id}).exec();
+        .findByIdAndRemove({ _id: this.params.id }).exec();
     } catch (e) {
       this.status = 500;
       log.error(e);

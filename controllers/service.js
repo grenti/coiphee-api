@@ -2,7 +2,7 @@
 
 const Service = require('../models/service');
 const Logger = require('bunyan');
-const log = new Logger({name: 'ServiceController'});
+const log = new Logger({ name: 'ServiceController' });
 
 class ServiceController {
   * getAll(next) {
@@ -18,7 +18,7 @@ class ServiceController {
 
   * get(next) {
     try {
-      this.body = yield Service.find({_id: this.params.id}).exec();
+      this.body = yield Service.find({ _id: this.params.id }).exec();
     } catch (e) {
       this.status = 500;
       log.error(e);
@@ -43,7 +43,7 @@ class ServiceController {
   * update(next) {
     try {
       yield Service
-        .findByIdAndUpdate({_id: this.params.id}, this.request.body).exec();
+        .findByIdAndUpdate({ _id: this.params.id }, this.request.body).exec();
     } catch (e) {
       this.status = 500;
       log.error(e);
@@ -54,7 +54,7 @@ class ServiceController {
 
   * remove(next) {
     try {
-      yield Service.findByIdAndRemove({_id: this.params.id}).exec();
+      yield Service.findByIdAndRemove({ _id: this.params.id }).exec();
     } catch (e) {
       this.status = 500;
       log.error(e);

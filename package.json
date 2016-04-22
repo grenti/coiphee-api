@@ -20,6 +20,7 @@
     "koa": "^0.6.3",
     "koa-body": "^1.4.0",
     "koa-compress": "1.0.7",
+    "koa-cors": "0.0.16",
     "koa-favicon": "^1.2.0",
     "koa-logger": "~1.2.1",
     "koa-ratelimit": "~1.0.3",

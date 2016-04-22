@@ -3,7 +3,7 @@
 
 const Coiffeur = require('../models/coiffeur');
 const Logger = require('bunyan');
-const log = new Logger({name: 'CoiffeurController'});
+const log = new Logger({ name: 'CoiffeurController' });
 
 /**
  * Coiffeur Controller for Coiffeur routes
@@ -26,7 +26,7 @@ class CoiffeurController {
 
   * get(next) {
     try {
-      this.body = yield Coiffeur.find({_id: this.params.id}).exec();
+      this.body = yield Coiffeur.find({ _id: this.params.id }).exec();
     } catch (e) {
       this.status = 500;
       console.error(e);
@@ -53,7 +53,7 @@ class CoiffeurController {
   * update(next) {
     try {
       yield Coiffeur
-        .findByIdAndUpdate({_id: this.params.id}, this.request.body).exec();
+        .findByIdAndUpdate({ _id: this.params.id }, this.request.body).exec();
       this.status = 201;
     } catch (e) {
       this.status = 500;
@@ -66,7 +66,7 @@ class CoiffeurController {
 
   * remove(next) {
     try {
-      yield Coiffeur.findByIdAndRemove({_id: this.params.id}).exec();
+      yield Coiffeur.findByIdAndRemove({ _id: this.params.id }).exec();
       this.status = 200;
     } catch (e) {
       this.status = 500;

@@ -2,7 +2,7 @@
 
 const Shoppe = require('../models/shoppe');
 const Logger = require('bunyan');
-const log = new Logger({name: 'ShoppeController'});
+const log = new Logger({ name: 'ShoppeController' });
 
 /**
  * Shoppe Controller to manage Shoppe interactions
@@ -27,7 +27,7 @@ class ShoppeController {
 
   * get(next) {
     try {
-      this.body = yield Shoppe.find({_id: this.params.id}).exec();
+      this.body = yield Shoppe.find({ _id: this.params.id }).exec();
     } catch (e) {
       this.status = 500;
       log.error(e);
@@ -50,7 +50,7 @@ class ShoppeController {
 
   * update(next) {
     try {
-      yield Shoppe.findByIdAndUpdate({_id: this.params.id}, this.request.body).exec();
+      yield Shoppe.findByIdAndUpdate({ _id: this.params.id }, this.request.body).exec();
     } catch (e) {
       this.status = 500;
       log.error(e);
@@ -61,7 +61,7 @@ class ShoppeController {
 
   * remove(next) {
     try {
-      yield Shoppe.findByIdAndRemove({_id: this.params.id}).exec();
+      yield Shoppe.findByIdAndRemove({ _id: this.params.id }).exec();
     } catch (e) {
       this.status = 500;
       log.error(e);

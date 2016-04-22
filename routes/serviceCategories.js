@@ -2,7 +2,7 @@
 
 const routeBuilder = require('./routeBuilder');
 const path = routeBuilder('servicecategories');
-const Controller = require('../controllers/servicecategory');
+const Controller = require('../controllers/serviceCategory');
 
 /**
  * Configures route for servicecategories

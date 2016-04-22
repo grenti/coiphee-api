@@ -2,6 +2,7 @@
 const body = require('koa-body');
 const koa = require('koa.io');
 const app = koa();
+const cors = require('koa-cors');
 const path = require('path');
 const favicon = require('koa-favicon');
 const router = require('koa-router')();
@@ -17,7 +18,10 @@ app.on('error', (err, context) => {
 });
 
 // request body parser
-app.use(body({formidable: {uploadDir: path.resolve(__dirname, '/uploads')}}));
+app.use(body({ formidable: { uploadDir: path.resolve(__dirname, '/uploads') } }));
+
+// cors config
+app.use(cors({ origin: true, methods: ['GET', 'POST', 'PUT', 'DELETE'] }));
 
 // x-response-time
 app.use(function *(next) {
