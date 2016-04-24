@@ -4,7 +4,7 @@ const path = require('path');
 const all = {
   env: process.env.NODE_ENV,
   root: path.normalize(path.resolve(__dirname, '/../../..')),
-  port: process.env.PORT || 5000,
+  port: process.env.PORT || 8080,
   version: 'v0',
   secrets: {
     session: 'demo-secret'
