@@ -4,7 +4,7 @@
 const mongoose = require('mongoose');
 const config = require('./index');
 const Logger = require('bunyan');
-const log = new Logger({name: 'MongooseConfig'});
+const log = new Logger({ name: 'MongooseConfig' });
 
 mongoose.connect(config.mongo.url);
 log.info(config.mongo.url);

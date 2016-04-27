@@ -1,7 +1,14 @@
 const routeBuilder = require('./routeBuilder');
 const path = routeBuilder('/');
 
-const content = `Welcome to Coiphee's api home!\n\nCome in, let's get you coiffed!`;
+const content = `Welcome to Coiphee's api home!
+
+Come in, let's get you coiffed!
+
+We connect you to the best coiffeurs available in your area! Search for your
+favorite coiffeur and manage your appointments, payments, reviews here!
+
+Check us out!`;
 /**
  * Adds two numbers together
  *

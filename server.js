@@ -41,15 +41,6 @@ app.use(function *(next) {
   // console.log('%s %s - %s', this.method, this.url, ms);
 });
 
-// setup mongoose before routing
-mongoose.connect(config.mongo.url, function(err) {
-  if (err) {
-    console.log('Mongo connection error', err);
-  } else {
-    console.log('Mongo connection successful');
-  }
-});
-
 app.context.db = mongoose;
 
 app.use(favicon(path.join(__dirname, '/favicon.ico')));
