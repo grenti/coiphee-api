@@ -57,9 +57,9 @@ gulp.task('run', () => {
  * code test coverage gulp task - run code coverage (optimally before tests)
  */
 gulp.task('coverage', () => {
-  return gulp.src(paths.tests.coverage, {base: '.'})
+  return gulp.src(paths.tests.coverage, { base: '.' })
     // Covering files
-    .pipe(istanbul({includeUntested: true}))
+    .pipe(istanbul({ includeUntested: true }))
     // Force `require` to return covered files
     .pipe(istanbul.hookRequire());
 });

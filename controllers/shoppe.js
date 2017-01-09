@@ -1,5 +1,3 @@
-'use strict';
-
 const Shoppe = require('../models/shoppe');
 const Logger = require('bunyan');
 const log = new Logger({ name: 'ShoppeController' });
@@ -12,64 +10,64 @@ const log = new Logger({ name: 'ShoppeController' });
  */
 class ShoppeController {
 
-  * getAll(next) {
+  static async getAll(ctx, next) {
     try {
-      const shoppes = yield Shoppe.find({}).exec();
+      const shoppes = await Shoppe.find({}).exec();
       console.log(`got to shoppe controller and returned: ${shoppes}`);
-      this.body = shoppes;
+      ctx.body = shoppes;
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next();
     }
   }
 
-  * get(next) {
+  static async get(ctx, next) {
     try {
-      this.body = yield Shoppe.find({ _id: this.params.id }).exec();
+      ctx.body = await Shoppe.find({ _id: ctx.params.id }).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next();
     }
   }
 
-  * create(next) {
+  static async create(ctx, next) {
     try {
-      let newShoppe = new Shoppe(this.request.body);
-      this.body = yield newShoppe.save();
+      let newShoppe = new Shoppe(ctx.request.body);
+      ctx.body = await newShoppe.save();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next();
     }
   }
 
-  * update(next) {
+  static async update(ctx, next) {
     try {
-      yield Shoppe.findByIdAndUpdate({ _id: this.params.id }, this.request.body).exec();
+      await Shoppe.findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next();
     }
   }
 
-  * remove(next) {
+  static async remove(ctx, next) {
     try {
-      yield Shoppe.findByIdAndRemove({ _id: this.params.id }).exec();
+      await Shoppe.findByIdAndRemove({ _id: ctx.params.id }).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next();
     }
   }
 
 }
 
-module.exports = new ShoppeController();
+module.exports = ShoppeController

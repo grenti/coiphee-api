@@ -1,75 +1,83 @@
+const body = require('koa-body')
+const Koa = require('koa')
+const app = new Koa()
+const cors = require('koa-cors')
+const path = require('path')
+const convert = require('koa-convert')
+const favicon = require('koa-favicon')
+const config = require('./config')
+const fs = require('fs')
+const bunyan = require('bunyan')
+const morgan = require('morgan')
+const mongoose = require('mongoose')
+const jwt = require('koa-jwt')
+const routeRegistry = require('./registry')
 
-const body = require('koa-body');
-const koa = require('koa.io');
-const app = koa();
-const cors = require('koa-cors');
-const path = require('path');
-const favicon = require('koa-favicon');
-const router = require('koa-router')();
-const config = require('./config');
-const bunyan = require('bunyan');
-const mongoose = require('mongoose');
-
-const log = bunyan.createLogger(config.bunyan);
-require('./config/mongoose');
+const log = bunyan.createLogger(config.bunyan)
+require('./config/mongoose')
 
 app.on('error', (err, context) => {
-  log.info(`Server error: ${err}\nContext: ${context}`);
-});
+  log.error(`Server error: ${err}\nContext: ${context}`)
+})
 
 // request body parser
-app.use(body({ formidable: { uploadDir: path.resolve(__dirname, '/uploads') } }));
+app.use(convert(body({ formidable: { uploadDir: path.resolve(__dirname, '/uploads') } })))
 
 // cors config
-app.use(cors({ origin: true, methods: ['GET', 'POST', 'PUT', 'DELETE'] }));
+app.use(convert(cors({ origin: true, methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] })))
 
 // x-response-time
-app.use(function *(next) {
-  var start = new Date();
-  yield next;
-  const ms = new Date() - start;
-  this.set('X-Response-Time', `${ms} ms`);
-  this.set('Server-Type', 'SirGrenti\'s');
-});
+app.use(async (ctx, next) => {
+  let start = new Date()
+  await next()
+  const ms = new Date() - start
+  ctx.set('X-Response-Time', `${ms} ms`)
+  ctx.set('Server-Type', "nunya")
+})
+
+// setup the morgan logger
+let accessLogStream = fs.createWriteStream(
+  path.resolve(__dirname + '/access.log'),
+  { flags: 'a' }
+)
+app.use(morgan('combined', { stream: accessLogStream }))
 
 // logger
-app.use(function *(next) {
-  var start = new Date();
-  yield next;
-  const ms = new Date() - start;
-  log.info('%s %s - %s', this.method, this.url, ms);
-  // console.log('%s %s - %s', this.method, this.url, ms);
+app.use(async (ctx, next) => {
+  let start = new Date()
+  await next()
+  const ms = new Date() - start
+  log.info('%s %s - %s', ctx.method, ctx.url, ms)
+})
+
+app.use(convert(favicon(path.join(__dirname, '/favicon.ico'))))
+
+app.use(async (ctx, next) => {
+  try {
+    await next()
+  } catch (err) {
+    if (401 == err.status) {
+      ctx.status = 401
+      ctx.body = 'Protected resource, use Authorization header to get access\n'
+    } else {
+      throw err
+    }
+  }
 });
 
-app.context.db = mongoose;
+// app.use(convert(jwt({ secret: 'na-so-so-ndolo' })))
 
-app.use(favicon(path.join(__dirname, '/favicon.ico')));
-const homeRoute = require('./routes/home');
-const coifferRoute = require('./routes/coiffeurs');
-const serviceCategoryRoute = require('./routes/serviceCategories');
-const serviceRoute = require('./routes/services');
-const shoppeRoute = require('./routes/shoppes');
+app.context.db = mongoose
 
-homeRoute(router);
-coifferRoute(router);
-serviceCategoryRoute(router);
-serviceRoute(router);
-shoppeRoute(router);
 
-app
-  .use(router.routes())
-  .use(router.allowedMethods());
+routeRegistry(app)
 
-app.io.use(function *(next) {
+// app.io.use(function * (next) {})
 
-});
+// app.io.route('happen', function * (next) {})
 
-app.io.route('happen', function *(next) {
+app.listen(config.port, () => {
+  console.log(`server running on port ${config.port}`)
+})
 
-});
-
-app.listen(config.port, function() {
-  console.log(`server running on port ${config.port}`);
-});
-
-module.exports = app;
+module.exports = app

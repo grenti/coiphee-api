@@ -1,5 +1,3 @@
-'use strict';
-
 const Logger = require('bunyan');
 const log = new Logger({ name: 'ServiceCategoryController' });
 const ServiceCategory = require('../models/serviceCategory');
@@ -11,64 +9,64 @@ const ServiceCategory = require('../models/serviceCategory');
  * @type {ServiceCategoryController}
  */
 class ServiceCategoryController {
-  * getAll(next) {
+  static async getAll(ctx, next) {
     try {
-      this.body = yield ServiceCategory.find({}).exec();
+      ctx.body = await ServiceCategory.find({}).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next()
     }
   }
 
-  * get(next) {
+  static async get(ctx, next) {
     try {
-      this.body = yield ServiceCategory.find({ _id: this.params.id }).exec();
+      ctx.body = await ServiceCategory.find({ _id: ctx.params.id }).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next()
     }
   }
 
-  * create(next) {
+  static async create(ctx, next) {
     try {
-      let newServiceCategory = new ServiceCategory(this.request.body);
-      this.body = yield newServiceCategory.save();
+      let newServiceCategory = new ServiceCategory(ctx.request.body);
+      ctx.body = await newServiceCategory.save();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next()
     }
   }
 
-  * update(next) {
+  static async update(ctx, next) {
     try {
       ServiceCategory
-        .findByIdAndUpdate({ _id: this.params.id }, this.request.body).exec();
+        .findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next()
     }
   }
 
-  * remove(next) {
+  static async remove(next) {
     try {
       ServiceCategory
-        .findByIdAndRemove({ _id: this.params.id }).exec();
+        .findByIdAndRemove({ _id: ctx.params.id }).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next()
     }
   }
 
 }
 
-module.exports = new ServiceCategoryController();
+module.exports = ServiceCategoryController

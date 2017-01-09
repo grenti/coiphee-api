@@ -10,37 +10,47 @@
     "koa"
   ],
   "scripts": {
+    "dev": "nodemon server.js",
     "test": "mocha ./tests/**/*.spec.js",
     "start": "node server.js | ./node_modules/.bin/bunyan -j"
   },
   "dependencies": {
+    "boom": "^4.2.0",
     "bunyan": "^1.6.0",
     "commander": "~2.2.0",
     "debug": "*",
-    "koa": "^0.6.3",
+    "global": "^4.3.1",
+    "joi": "^10.0.6",
+    "koa": "2.0.0",
     "koa-body": "^1.4.0",
+    "koa-bodyparser": "next",
     "koa-compress": "1.0.7",
+    "koa-convert": "^1.2.0",
     "koa-cors": "0.0.16",
     "koa-favicon": "^1.2.0",
+    "koa-jwt": "^1.2.0",
     "koa-logger": "~1.2.1",
+    "koa-morgan": "^1.0.1",
     "koa-ratelimit": "~1.0.3",
     "koa-response-time": "~1.0.2",
-    "koa-router": "^5.4.0",
+    "koa-router": "7",
     "koa.io": "0.0.3",
     "mongoose": "^4.4.1",
+    "promisify-node": "^0.4.0",
     "redis": "~0.10.3"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.8",
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
-    "eslint": "^2.0.0",
+    "eslint": "^3.12.2",
     "eslint-config-standard": "^5.1.0",
     "eslint-plugin-mocha": "^2.0.0",
     "eslint-plugin-promise": "^1.0.8",
     "eslint-plugin-react": "^3.16.1",
     "eslint-plugin-standard": "^1.3.2",
     "faker": "^3.0.1",
+    "faucet": "0.0.1",
     "gulp": "^3.9.1",
     "gulp-eslint": "^2.0.0",
     "gulp-istanbul": "^0.10.3",
@@ -49,8 +59,10 @@
     "gulp-notify": "^2.2.0",
     "istanbul": "^0.4.2",
     "mocha": "*",
+    "nodemon": "^1.11.0",
     "should": "*",
-    "supertest": "~0.8.2"
+    "supertest": "~0.8.2",
+    "tape": "^4.5.1"
   },
   "license": "MIT"
 }

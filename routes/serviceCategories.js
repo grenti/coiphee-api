@@ -1,21 +1,17 @@
-'use strict';
+const Router = require('koa-router')
+const routeBuilder = require('./routeBuilder')
+// const path = routeBuilder('servicecategories')
+const path = 'servicecategories'
+const Controller = require('../controllers/serviceCategory')
+const serviceCategoryRouter = new Router({
+  prefix: '/serviceCategories'
+})
 
-const routeBuilder = require('./routeBuilder');
-const path = routeBuilder('servicecategories');
-const Controller = require('../controllers/serviceCategory');
+serviceCategoryRouter
+  .get('/', Controller.getAll)
+  .get(`/:id`, Controller.get)
+  .post('/', Controller.create)
+  .put(`/:id`, Controller.update)
+  .delete(`/:id`, Controller.remove)
 
-/**
- * Configures route for servicecategories
- *
- * @param {Router} router
- */
-function serviceCategoryRoute(router) {
-  router
-    .get(path, Controller.getAll)
-    .get(`${path}/:id`, Controller.get)
-    .post(path, Controller.create)
-    .put(`${path}/:id`, Controller.update)
-    .delete(`${path}/:id`, Controller.remove);
-}
-
-module.exports = serviceCategoryRoute;
+module.exports = serviceCategoryRouter

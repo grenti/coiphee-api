@@ -12,70 +12,70 @@ const log = new Logger({ name: 'CoiffeurController' });
  * @type {CoiffeurController}
  */
 class CoiffeurController {
-  * getAll(next) {
+  static async getAll(ctx, next) {
     try {
-      this.body = yield Coiffeur.find({}).exec();
+      ctx.body = await Coiffeur.find({}).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       console.error(e);
       log.error(e);
     } finally {
-      yield next;
+      await next();
     }
   }
 
-  * get(next) {
+  static async get(next) {
     try {
-      this.body = yield Coiffeur.find({ _id: this.params.id }).exec();
+      ctx.body = await Coiffeur.find({ _id: ctx.params.id }).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       console.error(e);
       log.error(e);
     } finally {
-      yield next;
+      await next();
     }
   }
 
-  * create(next) {
+  static async create(next) {
     try {
-      var newCoiffeur = new Coiffeur(this.request.body);
-      this.body = yield newCoiffeur.save();
-      this.status = 201;
+      var newCoiffeur = new Coiffeur(ctx.request.body);
+      ctx.body = await newCoiffeur.save();
+      ctx.status = 201;
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       console.error(e);
       log.error(e);
     } finally {
-      yield next;
+      await next();
     }
   }
 
-  * update(next) {
+  static async update(next) {
     try {
-      yield Coiffeur
-        .findByIdAndUpdate({ _id: this.params.id }, this.request.body).exec();
-      this.status = 201;
+      await Coiffeur
+        .findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec();
+      ctx.status = 201;
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       console.error(e);
       log.error(e);
     } finally {
-      yield next;
+      await next();
     }
   };
 
-  * remove(next) {
+  static async remove(next) {
     try {
-      yield Coiffeur.findByIdAndRemove({ _id: this.params.id }).exec();
-      this.status = 200;
+      await Coiffeur.findByIdAndRemove({ _id: ctx.params.id }).exec();
+      ctx.status = 200;
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       console.error(e);
       log.error(e);
     } finally {
-      yield next;
+      await next();
     }
   };
 }
 
-module.exports = new CoiffeurController();
+module.exports = CoiffeurController;

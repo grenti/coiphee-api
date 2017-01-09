@@ -1,8 +1,7 @@
-
 const development = {
   mongo: {
-    url: 'mongodb://nodeDbApi:password@paulo.mongohq.com:10011/coiphee_dev'
+    url: 'mongodb://localhost:27017/coiphee_dev'
   }
-};
+}
 
-module.exports = development;
+module.exports = development

@@ -1,67 +1,65 @@
-'use strict';
-
 const Service = require('../models/service');
 const Logger = require('bunyan');
 const log = new Logger({ name: 'ServiceController' });
 
 class ServiceController {
-  * getAll(next) {
+  static async getAll(ctx, next) {
     try {
-      this.body = yield Service.find({}).exec();
+      ctx.body = await Service.find({}).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next()
     }
   }
 
-  * get(next) {
+  static async get(ctx, next) {
     try {
-      this.body = yield Service.find({ _id: this.params.id }).exec();
+      ctx.body = await Service.find({ _id: ctx.params.id }).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next()
     }
   }
 
-  * create(next) {
+  static async create(ctx, next) {
     try {
-      let newService = new Service(this.request.body);
-      this.body = yield newService.save();
-      this.status = 201;
+      let newService = new Service(ctx.request.body);
+      ctx.body = await newService.save();
+      ctx.status = 201;
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next()
     }
   }
 
-  * update(next) {
+  static async update(ctx, next) {
     try {
-      yield Service
-        .findByIdAndUpdate({ _id: this.params.id }, this.request.body).exec();
+      await Service
+        .findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next()
     }
   }
 
-  * remove(next) {
+  static async remove(ctx, next) {
     try {
-      yield Service.findByIdAndRemove({ _id: this.params.id }).exec();
+      await Service.findByIdAndRemove({ _id: ctx.params.id }).exec();
     } catch (e) {
-      this.status = 500;
+      ctx.status = 500;
       log.error(e);
     } finally {
-      yield next;
+      await next()
     }
   }
 }
 
-module.exports = new ServiceController();
+module.exports = ServiceController

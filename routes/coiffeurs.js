@@ -1,22 +1,17 @@
-'use strict';
+const Router = require('koa-router')
+const routeBuilder = require('./routeBuilder')
+// const path = routeBuilder('coiffeurs')
+const path = '/coiffeurs'
+const Controller = require('../controllers/coiffeur')
+const coiffeurRouter = new Router({
+  prefix: '/coiffeurs'
+})
 
-const routeBuilder = require('./routeBuilder');
-const path = routeBuilder('coiffeurs');
-// const Coiffeur = require('../models/coiffeur');
-const Controller = require('../controllers/coiffeur');
+coiffeurRouter
+  .get('/', Controller.getAll)
+  .get(`/:id`, Controller.get)
+  .post('/', Controller.create)
+  .put(`/:id`, Controller.update)
+  .delete(`/:id`, Controller.remove)
 
-/**
- * Adds two numbers together
- *
- * @param {Router} router
- */
-function coiffeurRoute(router) {
-  router
-    .get(path, Controller.getAll)
-    .get(`${path}/:id`, Controller.get)
-    .post(path, Controller.create)
-    .put(`${path}/:id`, Controller.update)
-    .delete(`${path}/:id`, Controller.remove);
-}
-
-module.exports = coiffeurRoute;
+module.exports = coiffeurRouter
