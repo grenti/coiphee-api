@@ -1,12 +1,10 @@
-'use strict';
-
-const faker = require('faker');
+const faker = require('faker')
 
 class CoiffeurFactory {
   /**
    * @return {Object}
    */
-  static build() {
+  static build () {
     return {
       name: {
         first: faker.name.firstName(),
@@ -18,7 +16,7 @@ class CoiffeurFactory {
         number: faker.phone.phoneNumber()
       }],
       location: {
-        street: faker.address.streetName(),
+        street: faker.address.streetAddress(),
         addtional: faker.address.secondaryAddress(),
         city: faker.address.city(),
         state: faker.address.stateAbbr(),
@@ -29,8 +27,8 @@ class CoiffeurFactory {
         name: faker.lorem.words(),
         offering: [faker.lorem.words(), faker.lorem.words()]
       }]
-    };
+    }
   }
 }
 
-module.exports = CoiffeurFactory;
+module.exports = CoiffeurFactory

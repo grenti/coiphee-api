@@ -13,7 +13,7 @@ const all = {
     name: 'coiphee-api',
     streams: [
       { level: 'info', stream: process.stdout },
-      { level: 'error', path: 'error.log' }
+      { level: 'error', path: 'log/error.log' }
   ]},
   mongo: {
     options: {

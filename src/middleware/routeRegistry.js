@@ -1,9 +1,9 @@
 const Boom = require('boom')
-const home = require('./routes/home')
-const coiffeurs = require('./routes/coiffeurs')
-const services = require('./routes/services')
-const shoppes = require('./routes/shoppes')
-const serviceCategories = require('./routes/serviceCategories')
+const home = require('../app/routes/home')
+const coiffeurs = require('../app/routes/coiffeurs')
+const services = require('../app/routes/services')
+const shoppes = require('../app/routes/shoppes')
+const serviceCategories = require('../app/routes/serviceCategories')
 
 const registry = app => {
   app
