@@ -1,51 +1,58 @@
-# ## Customize the test machine
-# machine:
-#
-#   timezone:
-#     America/New_York # Set the timezone
-#
-#   # Version of ruby to use
-#   node:
-#     version:
-#       5.6.0
-#
-#   # Add some environment variables
-#   environment:
-#     CIRCLE_ENV: test
-#     DATABASE_URL: mongodb://localhost:27017/coiphee_test
-#
-# ## Customize dependencies
-# dependencies:
-#   pre:
-#     - npm install coffeescript # install from a different package manager
-#     - gem uninstall bundler # use a custom version of bundler
-#     - gem install bundler --pre
-#
-#   override:
-#     - bundle install: # note ':' here
-#         timeout: 180 # fail if command has no output for 3 minutes
-#
-#
-# ## Customize database setup
+## Customize the test machine
+machine:
+
+  timezone:
+    America/New_York # Set the timezone
+
+  # Version of ruby to use
+  node:
+    version:
+      7.4.0
+
+  # Add some environment variables
+  environment:
+    CIRCLE_ENV: test
+    DATABASE_URL: mongodb://localhost:27017/coiphee_test
+    
+  services:
+    - mongodb
+
+## Customize dependencies
+dependencies:
+  pre:
+    - npm install # install from a different package manager
+    # - gem uninstall bundler # use a custom version of bundler
+    # - gem install bundler --pre
+
+  # override:
+  #   - bundle install: # note ':' here
+  #       timeout: 180 # fail if command has no output for 3 minutes
+
+
+## Customize database setup
 # database:
 #   override:
 #     # replace CircleCI's generated database.yml
 #     - cp config/database.yml.ci config/database.yml
 #     - bundle exec rake db:create db:schema:load
-#
-# ## Customize test commands
-# test:
-#   override:
-#     - mocha tests # use PHPunit for testing
-#   post:
-#     - bundle exec rake jasmine:ci: # add an extra test type
-#         environment:
-#           RAILS_ENV: test
-#           RACK_ENV: test
-#
-# ## Customize deployment commands
+
+## Customize test commands
+test:
+  override:
+    - npm run test # use PHPunit for testing
+  # post:
+  #   - bundle exec rake jasmine:ci: # add an extra test type
+  #       environment:
+  #         RAILS_ENV: test
+  #         RACK_ENV: test
+
+## Customize deployment commands
 # deployment:
 #   staging:
 #     branch: dev
 #     heroku:
 #       appname: foo-bar-123
+
+# notify:
+#   webhooks:
+#     - url: https://hooks.slack.com/services/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
