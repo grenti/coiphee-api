@@ -1,0 +1,13 @@
+{
+  "ignore": [
+    ".git",
+    "node_modules"
+  ],
+  "execMap": {
+    "js": "node --harmony-async-await"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js json"
+}
