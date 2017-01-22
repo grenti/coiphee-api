@@ -10,7 +10,7 @@ class CoiffeurFactory {
         first: faker.name.firstName(),
         last: faker.name.lastName()
       },
-      license: [String],
+      license: faker.random.words().split(' '),
       phone: [{
         type: 'home',
         number: faker.phone.phoneNumber()
@@ -22,10 +22,13 @@ class CoiffeurFactory {
         state: faker.address.stateAbbr(),
         zip: faker.address.zipCode()
       },
-      proficiencies: faker.lorem.words(),
+      proficiencies: faker.lorem.words().split(' '),
       amenities: [{
-        name: faker.lorem.words(),
-        offering: [faker.lorem.words(), faker.lorem.words()]
+        name: faker.lorem.word(),
+        offering: [faker.random.words().split(' ')]
+      }, {
+        name: faker.lorem.word(),
+        offering: [faker.random.words().split(' ')]
       }]
     }
   }

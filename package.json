@@ -15,6 +15,7 @@
   "scripts": {
     "dev": "nodemon './src/server.js'",
     "test": "NODE_ENV=test node --harmony-async-await ./src/tests/**/*.spec.js | tap-spec",
+    "test-coverage": "NODE_ENV=test node --harmony-async-await ./node_modules/.bin/istanbul cover ./src/tests/**/*.spec.js | tap-spec",
     "start": "node --harmony-async-await server.js | ./node_modules/.bin/bunyan -j"
   },
   "dependencies": {
@@ -60,7 +61,7 @@
     "gulp-mocha": "^2.2.0",
     "gulp-nodemon": "^2.0.6",
     "gulp-notify": "^2.2.0",
-    "istanbul": "^0.4.2",
+    "istanbul": "^0.4.5",
     "mocha": "*",
     "nodemon": "^1.11.0",
     "should": "*",

@@ -2524,7 +2524,7 @@ istanbul@0.3.*:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
-istanbul@^0.4.0, istanbul@^0.4.2:
+istanbul@^0.4.0, istanbul@^0.4.5:
   version "0.4.5"
   resolved "https://registry.yarnpkg.com/istanbul/-/istanbul-0.4.5.tgz#65c7d73d4c4da84d4f3ac310b918fb0b8033733b"
   dependencies:
