@@ -1,4 +1,4 @@
-FROM node:5
+FROM node:7
 
 RUN mkdir -p /usr/src/coiphee-api
 WORKDIR /usr/src/coiphee-api

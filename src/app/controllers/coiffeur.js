@@ -50,9 +50,13 @@ class CoiffeurController {
 
   static async get(ctx, next) {
     try {
-      const coiffeur = await Coiffeur.find({ _id: ctx.params.id }).exec()
-      ctx.status = !coiffeur ? 404 : 200
-      ctx.body = coiffeur
+      const coiffeur = await Coiffeur.findOne({ _id: ctx.params.id }).exec()
+      if (coiffeur) {
+        ctx.status = 200
+        ctx.body = coiffeur
+      } else {
+        ctx.status = 404
+      }
     } catch (e) {
       ctx.status = 500
       console.error(e)
@@ -78,9 +82,15 @@ class CoiffeurController {
 
   static async update(ctx, next) {
     try {
-      await Coiffeur
-        .findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec()
-      ctx.status = 201
+      const { id } = ctx.params
+      if (id) {
+        await Coiffeur
+          .findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec()
+        ctx.status = 200
+      } else {
+        ctx.status = 422
+        ctx.body = { errors: [{ message: 'Bad Request' }] }
+      }
     } catch (e) {
       ctx.status = 500
       console.error(e)
@@ -92,8 +102,14 @@ class CoiffeurController {
 
   static async remove(ctx, next) {
     try {
-      await Coiffeur.findByIdAndRemove({ _id: ctx.params.id }).exec()
-      ctx.status = 200
+      const { id } = ctx.params
+      if (id) {
+        await Coiffeur.findByIdAndRemove({ _id: ctx.params.id }).exec()
+        ctx.status = 200
+      } else {
+        ctx.status = 422
+        ctx.body = { errors: [{ message: 'Bad Request'}] }
+      }
     } catch (e) {
       ctx.status = 500
       console.error(e)
