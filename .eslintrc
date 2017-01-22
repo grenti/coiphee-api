@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2017
@@ -6,26 +7,13 @@
   "extends": "standard",
   "env": {
     "node": true,
-    "es6": true,
-    "jasmine": true,
-    "mocha": true
-  },
-  "rules": {
-    "semi": 0,
-    "space-infix-ops": [
-      2,
-      {
-        "int32Hint": false
-      }
-    ],
-    "space-before-function-paren": 0,
-    "strict": 0,
-    "arrow-parens": [
-      2,
-      "as-needed"
-    ]
+    "es6": true
   },
   "plugins": [
     "standard"
-  ]
+  ],
+  "rules": {
+    "space-before-function-paren": "off",
+    "space-infix-ops": "error"
+  }
 }

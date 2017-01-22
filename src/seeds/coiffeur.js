@@ -1,13 +1,13 @@
 const faker = require('faker')
 
-class CoiffeurFactory {
+class CoiffeurSeeder {
   static build () {
     return {
       name: {
         first: faker.name.firstName(),
         last: faker.name.lastName()
       },
-      license: [String],
+      license: faker.helpers.replaceSymbolWithNumber('####-###-####'),
       phone: [{
         type: 'home',
         number: faker.phone.phoneNumber()
@@ -19,13 +19,13 @@ class CoiffeurFactory {
         state: faker.address.stateAbbr(),
         zip: faker.address.zipCode()
       },
-      proficiencies: faker.lorem.words(),
+      proficiencies: faker.lorem.words().split(' '),
       amenities: [{
-        name: faker.lorem.words(),
-        offering: [faker.lorem.words(), faker.lorem.words()]
+        name: faker.lorem.word(),
+        offering: faker.lorem.words().split(' ')
       }]
     }
   }
 }
 
-module.exports = CoiffeurFactory
+module.exports = CoiffeurSeeder
