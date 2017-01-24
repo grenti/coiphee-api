@@ -1,6 +1,6 @@
-'use strict';
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 let coiffeurSchema = new Schema({
   name: {
@@ -25,6 +25,6 @@ let coiffeurSchema = new Schema({
     name: { type: String, required: true },
     offering: [{ type: String }]
   }]
-});
+})
 
-module.exports = mongoose.model('Coiffeur', coiffeurSchema);
+module.exports = mongoose.model('Coiffeur', coiffeurSchema)

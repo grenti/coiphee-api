@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "nodemon './src/server.js'",
-    "test": "NODE_ENV=test node --harmony-async-await ./src/tests/**/*.spec.js | tap-spec",
+    "test": "NODE_ENV=test node --harmony-async-await src/tests/**/*.spec.js | tap-spec",
     "test-coverage": "NODE_ENV=test node --harmony-async-await ./node_modules/.bin/istanbul cover ./src/tests/**/*.spec.js | tap-spec",
     "start": "node --harmony-async-await server.js | ./node_modules/.bin/bunyan -j"
   },
