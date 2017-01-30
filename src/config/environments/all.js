@@ -1,4 +1,4 @@
-'use strict'
+
 
 const path = require('path')
 const all = {
@@ -14,7 +14,8 @@ const all = {
     streams: [
       { level: 'info', stream: process.stdout },
       { level: 'error', path: 'log/error.log' }
-  ]},
+    ]
+  },
   mongo: {
     options: {
       db: {
