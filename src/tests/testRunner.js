@@ -1,9 +1,6 @@
 /**
  * Request Spec Functional Tests
  */
-// require('./requests/coiffeurs.spec')
-// require('./requests/shoppes.spec')
-// require('./requests/serviceCategories.spec')
 
 const glob = require('glob')
 const pattern = 'src/tests/**/*.spec.js'

@@ -14,6 +14,7 @@ const routeRegistry = require('./middleware/routeRegistry')
 const log = bunyan.createLogger(config.bunyan)
 const mongooseSetup = require('./config/mongoose')
 mongooseSetup.setup()
+app.context.db = mongooseSetup.getMongoose()
 
 app.on('error', errorHandler(log))
 
@@ -53,22 +54,20 @@ app.use(convert(favicon()))
 
 // app.use(convert(jwt({ secret: 'na-so-so-ndolo' })))
 
-app.context.db = mongooseSetup.getMongoose()
-
 routeRegistry(app)
-
+// console.log('routes registered')
 // app.io.use(function * (next) {})
 
 // app.io.route('happen', function * (next) {})
-let server
+
 // if (!module.parent) {
 //   server = app.listen(config.port, () => {
 //     console.log(`Koa application server running on port ${config.port}`)
 //   })
 // }
 
-server = app.listen(config.port, () => {
-  console.log(`Koa application server running on port ${config.port}`)
+const server = app.listen(config.port, () => {
+  console.log(`Koa application mounted on port ${config.port}`)
 })
 
 module.exports = {app, server}
