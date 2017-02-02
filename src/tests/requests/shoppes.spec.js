@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test'
 const factory = require('../factories/shoppe')
 const Shoppe = require('../../app/models/shoppe')
-const test = require('../tape-async')
+const test = require('tape')
 const mongoose = require('mongoose')
 const {request, server} = require('./request')
 
@@ -28,13 +28,16 @@ function teardown () {
 before('Setup Shoppe Data', t => {
   setup()
     .then(docs => {
+      t.plan(2)
       t.notEqual(docs, null)
       t.ok(docs.length === 30)
-      t.end()
+    }).catch(e => {
+      console.error(e)
     })
 })
 
 test('GET /Shoppes list should return 200', t => {
+  console.log('/GET Shoppe reached')
   request
     .get('/shoppes')
     .expect(200)

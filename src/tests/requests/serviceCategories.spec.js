@@ -50,9 +50,9 @@ test('GET /ServiceCategories list should return 200', t => {
 
 after('Teardown ServiceCategory data', t => {
   teardown()
-    .then(() => {
-      return mongoose.disconnect()
-    })
+    // .then(() => {
+    //   return mongoose.disconnect()
+    // })
     .then(() => {
       server.close()
       t.end()

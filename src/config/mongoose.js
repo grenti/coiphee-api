@@ -55,7 +55,12 @@ function mongooseSetup () {
   process.on('SIGINT', () => {
     connection.close(() => {
       console.log('Mongoose default connection disconnected through app termination')
-      process.exit(0)
+    })
+  })
+
+  process.on('EXIT', () => {
+    connection.close(() => {
+      console.log('Mongoose default connection disconnected through app termination')
     })
   })
 }

@@ -62,6 +62,7 @@
     "gulp-nodemon": "^2.0.6",
     "gulp-notify": "^2.2.0",
     "istanbul": "^0.4.5",
+    "leaked-handles": "^5.2.0",
     "mocha": "*",
     "nodemon": "^1.11.0",
     "should": "*",
