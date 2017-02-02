@@ -10,17 +10,17 @@ services:
   weba:
     build: .
     expose:
-      - 80
+      - 8080
 
   webb:
     build: .
     expose:
-      - 80
+      - 8080
 
   webc:
     build: .
     expose:
-      - 80
+      - 8080
   lb:
     image: haproxy:latest
     volumes:
