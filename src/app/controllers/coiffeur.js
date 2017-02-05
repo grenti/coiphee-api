@@ -84,8 +84,10 @@ class CoiffeurController {
     try {
       const { id } = ctx.params
       if (id) {
-        await Coiffeur
-          .findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec()
+        const coiffeur = await Coiffeur
+          .findByIdAndUpdate({ _id: id }, ctx.request.body).exec()
+        ctx.status = coiffeur ? 200 : 404
+        ctx.body = coiffeur ? {} : {errors: [{message: 'Not Found'}]}
         ctx.status = 200
       } else {
         ctx.status = 422
@@ -104,11 +106,11 @@ class CoiffeurController {
     try {
       const { id } = ctx.params
       if (id) {
-        await Coiffeur.findByIdAndRemove({ _id: ctx.params.id }).exec()
+        await Coiffeur.findByIdAndRemove({ _id: id }).exec()
         ctx.status = 200
       } else {
         ctx.status = 422
-        ctx.body = { errors: [{ message: 'Bad Request'}] }
+        ctx.body = { errors: [{message: 'Bad Request'}] }
       }
     } catch (e) {
       ctx.status = 500

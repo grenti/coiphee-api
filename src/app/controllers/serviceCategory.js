@@ -22,7 +22,13 @@ class ServiceCategoryController {
 
   static async get(ctx, next) {
     try {
-      ctx.body = await ServiceCategory.find({ _id: ctx.params.id }).exec()
+      const serviceCategory = await ServiceCategory.findOne({ _id: ctx.params.id }).exec()
+      if (serviceCategory) {
+        ctx.status = 200
+        ctx.body = serviceCategory
+      } else {
+        ctx.status = 404
+      }
     } catch (e) {
       ctx.status = 500
       log.error(e)
@@ -35,6 +41,7 @@ class ServiceCategoryController {
     try {
       let newServiceCategory = new ServiceCategory(ctx.request.body)
       ctx.body = await newServiceCategory.save()
+      ctx.status = 201
     } catch (e) {
       ctx.status = 500
       log.error(e)
@@ -45,8 +52,16 @@ class ServiceCategoryController {
 
   static async update(ctx, next) {
     try {
-      ServiceCategory
-        .findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec()
+      const {id} = ctx.params
+      const {body} = ctx.request
+      if (id) {
+        await ServiceCategory
+          .findByIdAndUpdate({ _id: id }, body).exec()
+        ctx.status = 200
+      } else {
+        ctx.status = 422
+        ctx.body = {errors: [{message: 'Bad Request'}]}
+      }
     } catch (e) {
       ctx.status = 500
       log.error(e)
@@ -57,8 +72,15 @@ class ServiceCategoryController {
 
   static async remove(ctx, next) {
     try {
-      ServiceCategory
-        .findByIdAndRemove({ _id: ctx.params.id }).exec()
+      const {id} = ctx.params
+      if (id) {
+        await ServiceCategory
+          .findByIdAndRemove({ _id: id }).exec()
+        ctx.status = 200
+      } else {
+        ctx.status = 422
+        ctx.body = {errors: [{message: 'Bad Request'}]}
+      }
     } catch (e) {
       ctx.status = 500
       log.error(e)

@@ -25,7 +25,7 @@ class ShoppeController {
 
   static async get(ctx, next) {
     try {
-      const shoppe = await Shoppe.find({ _id: ctx.params.id }).exec()
+      const shoppe = await Shoppe.findOne({ _id: ctx.params.id }).exec()
       if (shoppe) {
         ctx.body = shoppe
       } else {
@@ -42,6 +42,7 @@ class ShoppeController {
   static async create(ctx, next) {
     try {
       let newShoppe = new Shoppe(ctx.request.body)
+      ctx.status = 201
       ctx.body = await newShoppe.save()
     } catch (e) {
       ctx.status = 500
@@ -53,7 +54,16 @@ class ShoppeController {
 
   static async update(ctx, next) {
     try {
-      await Shoppe.findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec()
+      const {id} = ctx.params
+      const {body} = ctx.request
+      if (id) {
+        const shoppe = await Shoppe.findByIdAndUpdate({ _id: id }, body).exec()
+        ctx.status = shoppe ? 200 : 404
+        ctx.body = shoppe ? {} : {errors: [{message: 'Not Found'}]}
+      } else {
+        ctx.status = 422
+        ctx.body = {errors: [{message: 'Bad Request'}]}
+      }
     } catch (e) {
       ctx.status = 500
       log.error(e)
@@ -64,7 +74,15 @@ class ShoppeController {
 
   static async remove(ctx, next) {
     try {
-      await Shoppe.findByIdAndRemove({ _id: ctx.params.id }).exec()
+      const {id} = ctx.params
+      if (id) {
+        const shoppe = await Shoppe.findByIdAndRemove({ _id: id }).exec()
+        ctx.status = shoppe ? 200 : 404
+        ctx.body = shoppe ? {} : {errors: [{message: 'Not Found'}]}
+      } else {
+        ctx.status = 422
+        ctx.body = {errors: [{message: 'Bad Request'}]}
+      }
     } catch (e) {
       ctx.status = 500
       log.error(e)

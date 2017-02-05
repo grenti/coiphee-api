@@ -1,5 +1,3 @@
-'use strict'
-
 // Bring Mongoose into the app
 const mongoose = require('mongoose')
 const config = require('./index')
@@ -8,14 +6,21 @@ const log = new Logger({ name: 'MongooseConfig' })
 
 module.exports = {
   /**
-   * Setup Mongoose connection to MongoDB
+   * Connect Mongoose to MongoDb instance
    */
-  setup() {
+  connect() {
     return mongooseSetup()
   },
   /**
+   * Disconnect mongoose from MongoDb instance
+   */
+  disconnect() {
+    return disconnect()
+  },
+  /**
    * Get underlying mongoose module
-   * @returns Mongoose {Mongoose} module
+   * @class {Mongoose} Mongoose class
+   * @return {Mongoose} Mongoose module
    */
   getMongoose() {
     return mongoose
@@ -58,4 +63,16 @@ function mongooseSetup () {
       process.exit(0)
     })
   })
+}
+
+function disconnect () {
+  const { connection } = mongoose
+
+  if (connection.readyState === 1 ||
+    connection.readyState === 2) {
+    mongoose.disconnect()
+      .then(() => console.log('disconnect from mongodb successful'),
+        err => console.error('disconnection to mongodb failed', err))
+      .catch(err => console.error('disconnection to mongodb failed', err))
+  }
 }
