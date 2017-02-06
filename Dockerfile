@@ -25,5 +25,5 @@ RUN npm install
 
 COPY . /usr/src/coiphee-api
 
-EXPOSE 8080
+EXPOSE 4265
 CMD ["npm", "start"]
