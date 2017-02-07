@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 # services:
 #   web:
 #     build: ./src
@@ -7,18 +7,17 @@ version: '2'
 #     volumes:
 #      - ./src:/code
 services: 
-  weba:
+  api1:
     build: .
+    volumes: 
+      - .:/code
     expose:
       - 8080
 
-  webb:
+  api2:
     build: .
-    expose:
-      - 8080
-
-  webc:
-    build: .
+    volumes: 
+      - .:/code
     expose:
       - 8080
   lb:
@@ -26,13 +25,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     links:
-      - weba
-      - webb
-      - webc
+      - api1
+      - api2
     ports:
-      - "80:80"
-      - "70:70"
-
+      - "8080:8080"
     expose:
-      - "80"
-      - "70"
+      - "8080"
