@@ -1,10 +1,10 @@
 process.env.NODE_ENV = 'test'
 const factory = require('../factories/serviceCategory')
 const ServiceCategory = require('../../app/models/serviceCategory')
-// const test = require('../tape-async')
 const test = require('tape')
-const mongoose = require('mongoose')
+const mongooseSetup = require('../../config/mongoose')
 const {request, server} = require('./request')
+const route = '/servicecategories'
 
 const before = test
 const after = test
@@ -34,9 +34,9 @@ before('Setup ServiceCategory Data', t => {
   })
 })
 
-test('GET /ServiceCategories list should return 200', t => {
+test('/GET /ServiceCategories list should return 200', t => {
   request
-    .get('/servicecategories')
+    .get(route)
     .expect(200)
     .end((err, res) => {
       console.log('ServiceCategory call came back')
@@ -48,46 +48,129 @@ test('GET /ServiceCategories list should return 200', t => {
     })
 })
 
+test('POST /ServiceCategories should return 201', t => {
+  const data = factory.build()
+  request
+    .post(route)
+    .send(data)
+    .expect(201)
+    .end((err, res) => {
+      t.error(err)
+      t.notEqual(res.body, null, 'response body should not be null')
+
+      const serviceCategory = res.body
+      t.equal(serviceCategory.name, data.name, 'Name should be the same')
+      t.end()
+    })
+})
+
+test('/GET/:id /ServiceCategories should return 200', t => {
+  const data = factory.build()
+  let savedServiceCategory
+  request
+    .post(route)
+    .send(data)
+    .expect(201)
+    .end((err, res) => {
+      t.error(err, 'request callback error is null')
+      savedServiceCategory = res.body
+      t.notEqual(savedServiceCategory, null, "response body shouldn't be null")
+      // t.deepEqual(savedCoiffeur, data, 'response body should be the same')
+
+      request
+        .get(`${route}/${savedServiceCategory._id}`)
+        .expect(200)
+        .end((err, res) => {
+          t.error(err, 'request callback error is null')
+          t.notEqual(res.body, null, "response body shouldn't be null")
+
+          t.deepEqual(savedServiceCategory.name, data.name, 'Name should be the same')
+          t.end()
+        })
+    })
+})
+
+test('/PUT:id /ServiceCategories update should return 200', t => {
+  const data = factory.build()
+  let savedServiceCategory
+  request
+    .post(route)
+    .send(data)
+    .expect(201)
+    .end((err, res) => {
+      t.error(err, 'request callback error is null')
+      savedServiceCategory = res.body
+      t.notEqual(savedServiceCategory, null, "response body shouldn't be null")
+      // t.deepEqual(savedCoiffeur, data, 'response body should be the same')
+
+      savedServiceCategory.name = data.name = 'So Lit!'
+      const id = savedServiceCategory._id
+      delete savedServiceCategory._id
+
+      request
+        .put(`${route}/${id}`)
+        .send(savedServiceCategory)
+        .expect(200)
+        .end((er, resp) => {
+          t.error(er, 'request callback error is null')
+          t.notEqual(resp.body, null, "response body shouldn't be null")
+
+          t.equal(savedServiceCategory.name, data.name, 'Name should be the same')
+          request
+            .get(`${route}/${id}`)
+            .expect(200)
+            .end((e, respo) => {
+              t.error(e, 'Updated serviceCategory should have been retrieved')
+              t.notEqual(respo.body, null, 'ServiceCategory get should not be null')
+
+              t.equal(respo.body.name, data.name, 'ServiceCategory updated name should be the same')
+              t.end()
+            })
+        })
+    })
+})
+
+test('/DELETE/:id /ServiceCategories delete record and return 200', t => {
+  const data = factory.build()
+  request
+    .post(route)
+    .send(data)
+    .expect(201)
+    .end((err, res) => {
+      t.error(err, 'request callback error is null')
+      t.notEqual(res.body, null, "response body shouldn't be null")
+      const savedServiceCategory = res.body
+
+      request
+        .delete(`${route}/${savedServiceCategory._id}`)
+        .expect(200)
+        .end((err, resp) => {
+          t.error(err, 'request callback error is null')
+          t.deepEqual(resp.body, {}, 'response body should be empty')
+
+          request
+            .get(`${route}/${res.body._id}`)
+            .expect(404)
+            .end((err, respo) => {
+              t.error(err)
+              t.deepEqual(respo.body, {})
+              t.end()
+            })
+        })
+    })
+})
+
 after('Teardown ServiceCategory data', t => {
   teardown()
-    // .then(() => {
-    //   return mongoose.disconnect()
-    // })
+    .then(() => {
+      if (require.main === module) {
+        return mongooseSetup.disconnect()
+      }
+    })
     .then(() => {
       server.close()
       t.end()
     })
 })
 
-// (async function() {
-//   const a = await before('Setup ServiceCategory Data')
-//   await setup()
-//   a.end()
-// })()
-
-// (async function () {
-//   try {
-//     const g = await test('GET /ServiceCategories list should return 200')
-//     request
-//       .get('/servicecategories')
-//       .expect(200)
-//       .end((err, res) => {
-//         console.log('ServiceCategory call came back')
-//         g.error(err)
-//         g.notEqual(res.body, null)
-//         g.notEqual(res.body, [])
-//         g.ok(res.body.length === 30)
-//         g.end()
-//       })
-//   } catch (e) {
-//     console.error(e)
-//   }
-// })()
-
-// (async function () {
-//   const e = await after('Teardown ServiceCategory data')
-//   await teardown()
-//   await mongoose.disconnect()
-//   await server.close()
-//   e.end()
-// })()
+// test.onFinish(() => console.log('Tape on Finish called'))

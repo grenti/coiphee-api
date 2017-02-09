@@ -12,7 +12,7 @@ class ShoppeFactory {
         type: 'office',
         number: faker.phone.phoneNumber()
       }],
-      paymentTypes: ['Cash', 'Visa'],
+      paymentTypes: ['Cash', 'Visa', 'MasterCard', 'American Express', 'Discover'],
       walkInAccepted: true,
       location: {
         street: faker.address.streetAddress(),

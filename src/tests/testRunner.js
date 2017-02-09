@@ -11,21 +11,15 @@ process.env.NODE_ENV = 'test'
 const glob = require('glob')
 const pattern = 'src/tests/**/*.spec.js'
 const {resolve} = require('path')
-const mongoose = require('mongoose')
 
 const cwd = process.cwd()
-// server.on('close', () => {
-//   mongoose.disconnect()
-// })
 
 glob(pattern, (err, files) => {
   if (err) {
-    // return process.exit(1)
-    return
+    return console.error(`Test Runner Failed. Error: ${err}`)
   }
   files.forEach(f => {
-    // setTimeout(() => {
+    console.log(`Executing file require('${f}')`)
     require(resolve(cwd, f))
-  // }, 3000)
   })
 })

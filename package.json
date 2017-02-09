@@ -16,6 +16,7 @@
     "dev": "nodemon './src/server.js'",
     "test": "node --harmony-async-await src/tests/testRunner.js",
     "test-coverage": "NODE_ENV=test node --harmony-async-await ./node_modules/.bin/istanbul cover ./src/tests/**/*.spec.js | tap-spec",
+    "seed": "node --harmony-async-await src/seeds/seeder.js",
     "start": "node --harmony-async-await ./src/server.js | ./node_modules/.bin/bunyan -j"
   },
   "dependencies": {
@@ -41,7 +42,8 @@
     "koa.io": "0.0.3",
     "mongoose": "^4.4.1",
     "promisify-node": "^0.4.0",
-    "redis": "~0.10.3"
+    "redis": "~0.10.3",
+    "server-destroy": "^1.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",

@@ -1,7 +1,13 @@
 const supertest = require('supertest')
-const {app, server} = require('../../server')
+// const tape = require('tape')
+// const mongooseSetup = require('../../config/mongoose')
+// const app = require('../../appSetup')
+// const {port} = require('../../config')
+const server = require('../../server')
 
+// tape.onFinish(() => mongooseSetup.disconnect())
+// tape.onFinish(() => console.log('Tape on Finish called'))
 // const request = supertest(app.listen())
 const request = supertest(server)
 
-module.exports = {app, server, request}
+module.exports = {server, request}

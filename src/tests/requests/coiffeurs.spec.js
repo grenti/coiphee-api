@@ -4,7 +4,8 @@ const factory = require('../factories/coiffeur')
 const Coiffeur = require('../../app/models/coiffeur')
 const asyncTest = require('../tape-async')
 const {request, server} = require('./request')
-const mongoose = require('mongoose')
+const mongooseSetup = require('../../config/mongoose')
+const route = '/coiffeurs'
 
 const before = asyncTest
 const after = asyncTest
@@ -35,7 +36,7 @@ function teardown() {
 (async function () {
   const l = await asyncTest('GET Coiffeur list should return 200')
   request
-    .get('/coiffeurs?page=1&offset=10')
+    .get(`${route}?page=1&offset=10`)
     .expect(200)
     .end((err, res) => {
       l.plan(3)
@@ -51,7 +52,7 @@ function teardown() {
     const assert = await asyncTest('POST Coiffeur should return 201')
     const data = factory.build()
     request
-      .post('/coiffeurs')
+      .post(route)
       .send(data)
       .expect(201)
       .end((err, res) => {
@@ -91,7 +92,7 @@ function teardown() {
   const data = factory.build()
   let savedCoiffeur
   request
-    .post('/coiffeurs')
+    .post(route)
     .send(data)
     .expect(201)
     .end((err, res) => {
@@ -101,7 +102,7 @@ function teardown() {
       // l.deepEqual(savedCoiffeur, data, 'response body should be the same')
 
       request
-        .get(`/coiffeurs/${savedCoiffeur._id}`)
+        .get(`${route}/${savedCoiffeur._id}`)
         .expect(200)
         .end((err, res) => {
           l.error(err, 'request callback error is null')
@@ -132,7 +133,7 @@ function teardown() {
   const data = factory.build()
   let savedCoiffeur
   request
-    .post('/coiffeurs')
+    .post(route)
     .send(data)
     .expect(201)
     .end((err, res) => {
@@ -150,29 +151,23 @@ function teardown() {
       delete savedCoiffeur._id
 
       request
-        .put(`/coiffeurs/${id}`)
+        .put(`${route}/${id}`)
         .send(savedCoiffeur)
         .expect(200)
         .end((err, res) => {
           l.error(err, 'request callback error is null')
           l.notEqual(res.body, null, "response body shouldn't be null")
 
-          l.deepEqual(savedCoiffeur.name, data.name, 'Name should be the same')
+          request
+            .get(`${route}/${id}`)
+            .expect(200)
+            .end((er, resp) => {
+              const returned = resp.body
+              l.deepEqual(returned.name, data.name, 'Retrieved Coiffeur Name should be the same')
 
-          const { license } = savedCoiffeur
-          l.ok(license)
-          l.equal(license.length, data.license.length, 'savedCoiffeur licence array length should be the same')
-          license.forEach(i => l.ok(data.license.indexOf(i) >= 0))
-
-          l.deepEqual(savedCoiffeur.location, data.location, 'Location should be the same')
-
-          const { proficiencies } = savedCoiffeur
-          l.equal(proficiencies.length, data.proficiencies.length)
-          proficiencies.forEach(p => l.ok(data.proficiencies.includes(p)))
-
-          const { amenities } = savedCoiffeur
-          l.equal(amenities.length, data.amenities.length)
-          l.end()
+              l.deepEqual(savedCoiffeur.location, data.location, 'Retrieved Coiffeur Location should be the same')
+              l.end()
+            })
         })
     })
 })();
@@ -181,7 +176,7 @@ function teardown() {
   const l = await asyncTest('DELETE/:id Coiffeur delete record and return 200')
   const data = factory.build()
   request
-    .post('/coiffeurs')
+    .post(route)
     .send(data)
     .expect(201)
     .end((err, res) => {
@@ -189,14 +184,14 @@ function teardown() {
       l.notEqual(res.body, null, "response body shouldn't be null")
 
       request
-        .delete(`/coiffeurs/${res.body._id}`)
+        .delete(`${route}/${res.body._id}`)
         .expect(200)
         .end((err, resp) => {
           l.error(err, 'request callback error is null')
           l.deepEqual(resp.body, {}, 'response body should be empty')
 
           request
-            .get(`/coiffeurs/${res.body._id}`)
+            .get(`${route}/${res.body._id}`)
             .expect(404)
             .end((err, respo) => {
               l.error(err)
@@ -210,7 +205,9 @@ function teardown() {
 (async function () {
   const a = await after('Teardown Coiffeur Data')
   await teardown()
-  await mongoose.disconnect()
+  if (require.main === module) {
+    await mongooseSetup.disconnect()
+  }
   await server.close()
   console.log('Still listening: ', server.listening)
   a.end()
