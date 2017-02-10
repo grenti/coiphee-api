@@ -2,12 +2,15 @@ const faker = require('faker')
 
 class ServiceFactory {
   static build (serviceCategoryId = '') {
-    return {
+    const svc = {
       name: faker.name.findName(),
       description: faker.lorem.sentences(),
-      category: serviceCategoryId,
       price: faker.commerce.price()
     }
+    if (serviceCategoryId) {
+      svc.category = serviceCategoryId
+    }
+    return svc
   }
 }
 

@@ -1,4 +1,5 @@
-const mongooseSetup = require('../config/mongoose')
+const config = require('../config')
+const mongoose = require('mongoose')
 
 const Coiffeur = require('../app/models/coiffeur')
 const Shoppe = require('../app/models/shoppe')
@@ -13,86 +14,121 @@ const ServiceFactory = require('./service')
 const QuestionFactory = require('./question')
 
 process.env.NODE_ENV = 'development'
-const start = new Date();
+const start = new Date()
 
-(async function connect() {
-  mongooseSetup.connect()
-})();
+const connect = async () => {
+  try {
+    mongoose.Promise = global.Promise
+    return mongoose.connect(config.mongo.url)
+  } catch (e) {
+    console.log(e)
+    throw e
+  }
+}
 
-(async function coiffeur() {
+const coiffeur = async () => {
   try {
       // -- --grep="pattern"
-  // const start = new Date()
-
     const coiffeurs = []
     for (let i = 0; i < 500; i++) {
       coiffeurs.push(CoiffeurFactory.build())
     }
     await Coiffeur.remove({}).exec()
-    const savedCoiffeurs = await Coiffeur.insertMany(coiffeurs)
-    console.log(`Finished seeding coiffeurs: ${savedCoiffeurs}`)
-    await mongooseSetup.disconnect()
-  // console.log(`Time elapsed: ${(new Date() - start) / 1000}s`)
+    return Coiffeur.insertMany(coiffeurs)
   } catch (e) {
     console.error(e)
     throw e
   }
-})();
+}
 
-(async function shoppe() {
+const shoppe = async (services = [], coiffeurs = []) => {
   try {
     const shoppes = []
     for (let i = 0; i < 500; i++) {
-      shoppes.push(ShoppeFactory.build())
+      const sRando = Math.floor(Math.random() * (services.length - 0 + 1)) + 0
+      const slicedService = services.length > sRando ? services.slice(sRando) : []
+      const cRando = Math.floor(Math.random() * (coiffeurs.length - 0 + 1)) + 0
+      const slicedCoiffeur = coiffeurs.length > cRando ? coiffeurs.slice(cRando) : []
+      shoppes.push(ShoppeFactory.build(slicedService.map(s => s._id), slicedCoiffeur.map(c => c._id)))
     }
     await Shoppe.remove({}).exec()
-    const savedShoppes = await Shoppe.insertMany(shoppes)
-    console.log(`Finished seeding shoppes: ${savedShoppes}`)
+    return Shoppe.insertMany(shoppes)
   } catch (e) {
     console.error(e)
     throw e
   }
-})();
+}
 
-(async function serviceCategory() {
+const serviceCategory = async () => {
   try {
     const serviceCategories = []
     for (let i = 0; i < 50; i++) {
       serviceCategories.push(ServiceCategoryFactory.build())
     }
     await ServiceCategory.remove({}).exec()
-    const savedServiceCategories = await ServiceCategory.insertMany(serviceCategories)
-    console.log(`Finished seeding serviceCategories: ${savedServiceCategories}`)
+    return ServiceCategory.insertMany(serviceCategories)
   } catch (e) {
     console.error(e)
     throw e
   }
-})();
+}
 
-(async function question() {
+const service = async (serviceCategories = []) => {
+  try {
+    const services = []
+    for (let i = 0; i < 100; i++) {
+      const rando = Math.floor(Math.random() * (serviceCategories.length - 0 + 1)) + 0
+      const serviceCat = serviceCategories.length > rando ? serviceCategories[rando] : serviceCategories[0]
+      services.push(ServiceFactory.build(serviceCat._id))
+    }
+    await Service.remove({}).exec()
+    return Service.insertMany(services)
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+}
+
+const question = async () => {
   try {
     const questions = []
     for (let i = 0; i < 20; i++) {
       questions.push(QuestionFactory.build())
     }
     await Question.remove({}).exec()
-    const savedQuestions = await Question.insertMany(questions)
-    console.log(`Finished seeding coiffeurs: ${savedQuestions}`)
+    return Question.insertMany(questions)
   } catch (e) {
     console.error(e)
     throw e
   }
-})()
+}
 
-// (async function disconnect() {
-//   try {
-//     await mongooseSetup.disconnect()
-//     console.log(`Time elapsed: ${(new Date() - start) / 1000}s`)
-//   } catch (e) {
-//     console.error(e)
-//     throw e
-//   }
-// })()
-mongooseSetup.disconnect()
-console.log(`Time elapsed: ${(new Date() - start) / 1000}s`)
+const disconnect = async () => {
+  try {
+    console.log(`Time elapsed: ${(new Date() - start) / 1000}s`)
+    return mongoose.disconnect()
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+}
+
+(async () => {
+  try {
+    await connect()
+    const serviceCategories = await serviceCategory()
+    console.log('Service Categories done.')
+    const services = await service(serviceCategories)
+    console.log('Service done..')
+    const coiffeurs = await coiffeur()
+    console.log('Coiffeurs done...')
+    const shoppes = await shoppe(services, coiffeurs)
+    console.log('Shoppes done....')
+    const questions = await question()
+    console.log('Questions done.....')
+    await disconnect()
+  } catch (e) {
+    console.log(e)
+  }
+})()
 

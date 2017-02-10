@@ -4,7 +4,7 @@ class ShoppeFactory {
   /**
    * @return {Object}
    */
-  static build () {
+  static build (services = [], coiffeurs = []) {
     return {
       name: faker.name.findName(),
       description: faker.lorem.sentences(),
@@ -24,7 +24,9 @@ class ShoppeFactory {
       amenities: [{
         name: faker.lorem.word(),
         offering: [faker.lorem.sentence()]
-      }]
+      }],
+      services: services,
+      coiffeurs: coiffeurs
     }
   }
 }
