@@ -1,11 +1,10 @@
-
-
 const path = require('path')
 const all = {
   env: process.env.NODE_ENV,
   root: path.normalize(path.resolve(__dirname, '/../../..')),
   port: process.env.PORT || 4265,
   version: 'v0',
+  ssl: false,
   secrets: {
     session: 'demo-secret'
   },
@@ -22,6 +21,9 @@ const all = {
         safe: true
       }
     }
+  },
+  uri() {
+    return `${this.ssl ? 'https' : 'http'}://localhost:${this.port}`
   }
 }
 

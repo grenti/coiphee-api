@@ -2,6 +2,7 @@ const config = require('../../config')
 const Shoppe = require('../models/shoppe')
 const Logger = require('bunyan')
 const log = new Logger({ name: 'ShoppeController' })
+const PageLinkFactory = require('./pageLinkFactory')
 
 /**
  * Shoppe Controller to manage Shoppe interactions
@@ -23,20 +24,13 @@ class ShoppeController {
         .exec()
       const totalRecords = await Shoppe.count()
 
-      const result = {
-        data: shoppes,
-        links: {
-          first: `/coiffeurs?page=1&rows=${rows}`,
-          previous: `/coiffeurs?page=${page - 1 === 0 ? page : page - 1}&offset=${rows}`,
-          next: `/coiffeurs?page=${page + 1}&rows=${rows}`,
-          last: `/coiffeurs?page=${Math.ceil(totalRecords / rows)}&offset=${rows}`
-        }
-      }
+      const meta = { route: 'shoppes', data: shoppes, page, rows, count: totalRecords }
+      const { data, links, header } = PageLinkFactory.build(meta)
 
-      ctx.body = totalRecords ? result : []
+      ctx.body = totalRecords ? { data, links } : []
       ctx.set('X-Total-Count', totalRecords)
       if (totalRecords) {
-        ctx.set('Link', `<http://localhost:${config.port}/coiffeurs?page=${page + 1}&rows=${rows}>; rel="next"`)
+        ctx.set('Link', header.link)
       }
     } catch (e) {
       ctx.status = 500

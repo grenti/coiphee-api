@@ -8,10 +8,10 @@ class ResponseTime {
    * @param next {function} next middleware function
    */
   static async setHeader(ctx, next) {
-      let start = new Date()
-      await next()
-      const ms = new Date() - start
-      ctx.set('X-Response-Time', `${ms} ms`)
+    let start = new Date()
+    await next()
+    const ms = new Date() - start
+    ctx.set('X-Response-Time', `${ms}ms`)
   }
   /**
    * Async middleware to log response time for handlers
@@ -22,7 +22,7 @@ class ResponseTime {
     let start = new Date()
     await next()
     const ms = new Date() - start
-    log.info('%s %s - %s', ctx.method, ctx.url, ms)
+    log.info('%s %s - %sms', ctx.method, ctx.url, ms)
   }
 }
 

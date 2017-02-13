@@ -36,14 +36,14 @@ before('Setup ServiceCategory Data', t => {
 
 test('/GET /ServiceCategories list should return 200', t => {
   request
-    .get(route)
+    .get(`${route}?page=1&rows=30`)
     .expect(200)
     .end((err, res) => {
       console.log('ServiceCategory call came back')
       t.error(err)
       t.notEqual(res.body, null)
       t.notEqual(res.body, [])
-      t.ok(res.body.length === 30)
+      t.ok(res.body.data.length === 30)
       t.end()
     })
 })
