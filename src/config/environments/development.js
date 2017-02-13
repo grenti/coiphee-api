@@ -1,7 +1,9 @@
+const { NODE_ENV, PORT, DB_USER, DB_PW, DB_URI, DB_PORT, DB_NAME } = process.env
 const development = {
-  port: process.env.PORT || 4265,
+  env: NODE_ENV || 'development',
+  port: PORT || 4265,
   mongo: {
-    url: 'mongodb://localhost:27017/coiphee_dev'
+    url: `mongodb://${DB_USER}:${DB_PW}@${DB_URI}:${DB_PORT}/${DB_NAME}`
   }
 }
 

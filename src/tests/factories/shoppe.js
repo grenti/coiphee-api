@@ -1,12 +1,10 @@
-'use strict';
-
-const faker = require('faker');
+const faker = require('faker')
 
 class ShoppeFactory {
   /**
    * @return {Object}
    */
-  static build() {
+  static build () {
     return {
       name: faker.name.findName(),
       description: faker.lorem.sentences(),
@@ -27,8 +25,8 @@ class ShoppeFactory {
         name: faker.lorem.words(),
         offering: [faker.lorem.sentence()]
       }]
-    };
+    }
   }
 }
 
-module.exports = ShoppeFactory;
+module.exports = ShoppeFactory

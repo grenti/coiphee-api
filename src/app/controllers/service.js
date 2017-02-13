@@ -1,14 +1,20 @@
-const Service = require('../models/service');
-const Logger = require('bunyan');
-const log = new Logger({ name: 'ServiceController' });
+const Service = require('../models/service')
+const Logger = require('bunyan')
+const log = new Logger({ name: 'ServiceController' })
 
+/**
+ * Controller with handlers for Service routes
+ *
+ * @class {ServiceController}
+ * @type {ServiceController}
+ */
 class ServiceController {
-  static async getAll(ctx, next) {
+  static async gets(ctx, next) {
     try {
-      ctx.body = await Service.find({}).exec();
+      ctx.body = await Service.find({}).exec()
     } catch (e) {
-      ctx.status = 500;
-      log.error(e);
+      ctx.status = 500
+      log.error(e)
     } finally {
       await next()
     }
@@ -16,10 +22,10 @@ class ServiceController {
 
   static async get(ctx, next) {
     try {
-      ctx.body = await Service.find({ _id: ctx.params.id }).exec();
+      ctx.body = await Service.find({ _id: ctx.params.id }).exec()
     } catch (e) {
-      ctx.status = 500;
-      log.error(e);
+      ctx.status = 500
+      log.error(e)
     } finally {
       await next()
     }
@@ -27,12 +33,12 @@ class ServiceController {
 
   static async create(ctx, next) {
     try {
-      let newService = new Service(ctx.request.body);
-      ctx.body = await newService.save();
-      ctx.status = 201;
+      let newService = new Service(ctx.request.body)
+      ctx.body = await newService.save()
+      ctx.status = 201
     } catch (e) {
-      ctx.status = 500;
-      log.error(e);
+      ctx.status = 500
+      log.error(e)
     } finally {
       await next()
     }
@@ -41,10 +47,10 @@ class ServiceController {
   static async update(ctx, next) {
     try {
       await Service
-        .findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec();
+        .findByIdAndUpdate({ _id: ctx.params.id }, ctx.request.body).exec()
     } catch (e) {
-      ctx.status = 500;
-      log.error(e);
+      ctx.status = 500
+      log.error(e)
     } finally {
       await next()
     }
@@ -52,10 +58,10 @@ class ServiceController {
 
   static async remove(ctx, next) {
     try {
-      await Service.findByIdAndRemove({ _id: ctx.params.id }).exec();
+      await Service.findByIdAndRemove({ _id: ctx.params.id }).exec()
     } catch (e) {
-      ctx.status = 500;
-      log.error(e);
+      ctx.status = 500
+      log.error(e)
     } finally {
       await next()
     }

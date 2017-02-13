@@ -1,6 +1,5 @@
-
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const shoppeSchema = new Schema({
   name: { type: String, required: true },
@@ -11,8 +10,8 @@ const shoppeSchema = new Schema({
   }],
   paymentTypes: [{
     type: String,
-    enum: ['Visa', 'Master Card', 'Discover',
-    'American Express', 'Cash', 'Check'],
+    enum: ['Visa', 'MasterCard', 'Discover',
+      'American Express', 'Cash', 'Check'],
     required: true
   }],
   walkInAccepted: { type: Boolean, required: true },
@@ -29,6 +28,6 @@ const shoppeSchema = new Schema({
   }],
   coiffeurs: [{ type: Schema.Types.ObjectId, ref: 'Coiffeur' }],
   services: [{ type: Schema.Types.ObjectId, ref: 'Services' }]
-});
+})
 
-module.exports = mongoose.model('Shoppe', shoppeSchema);
+module.exports = mongoose.model('Shoppe', shoppeSchema)

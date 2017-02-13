@@ -1,48 +1,11 @@
-'use strict'
 
 process.env.NODE_ENV = 'test'
 const factory = require('../factories/coiffeur')
 const Coiffeur = require('../../app/models/coiffeur')
-var savedCoiffeurs = []
 const asyncTest = require('../tape-async')
-// run the server locally for a test instance
 const {request, server} = require('./request')
-const mongoose = require('mongoose')
-
-// it('should list one coiffeur on /coiffeurs/1 GET', function(done) {
-//   // console.log(savedCoiffeurs[3])
-//   chai.request(serverUri)
-//     .get(routeBuilder('coiffeurs') + `/${savedCoiffeurs[3]._id}`)
-//     .end(function(err, res) {
-//       should.not.exist(err)
-//       res.should.have.status(200)
-//       done()
-//     })
-// })
-
-// it('should create one coiffeur on /coiffeurs POST', function(done) {
-//   chai.request(serverUri)
-//     .post(routeBuilder('coiffeurs'))
-//     .send(factory.build())
-//     .end(function(err, res) {
-//       should.not.exist(err)
-//       res.should.have.status(201)
-//       done()
-//     })
-// })
-
-// after(function(done) {
-//   Coiffeur.remove({}, function(err, docs) {
-//     if (err) {
-//       console.error('Error deleting coiffeur data')
-//       return done()
-//     }
-//     done()
-//   })
-// })
-
-// t.end()
-// })
+const mongooseSetup = require('../../config/mongoose')
+const route = require('../../app/routes/routeBuilder')('coiffeurs')
 
 const before = asyncTest
 const after = asyncTest
@@ -66,15 +29,14 @@ function teardown() {
 
 (async function () {
   const b = await before('Setup Coiffeur Data')
-  savedCoiffeurs = await setup()
-  // savedCoiffeurs.forEach(c => console.log(c))
+  await setup()
   b.end()
 })();
 
 (async function () {
   const l = await asyncTest('GET Coiffeur list should return 200')
   request
-    .get('/coiffeurs?page=1&offset=10')
+    .get(`${route}?page=1&offset=10`)
     .expect(200)
     .end((err, res) => {
       l.plan(3)
@@ -90,13 +52,12 @@ function teardown() {
     const assert = await asyncTest('POST Coiffeur should return 201')
     const data = factory.build()
     request
-      .post('/coiffeurs')
+      .post(route)
       .send(data)
       .expect(201)
       .end((err, res) => {
         assert.error(err)
         assert.notEqual(res.body, null, 'response body should not be null')
-        
         const coiffeur = res.body
         assert.deepEqual(coiffeur.name, data.name, 'Name should be the same')
 
@@ -117,7 +78,6 @@ function teardown() {
         assert.equal(amenities.length, data.amenities.length)
         // console.log(amenities, data.amenities)
         // amenities.forEach(a => assert.ok(data.amenities.filter(f => f.name === a.name).length === 0))
-        
         assert.end()
       })
   } catch (e) {
@@ -128,10 +88,10 @@ function teardown() {
 (async function () {
   const l = await asyncTest('GET/:id Coiffeur record should return 200')
   const data = factory.build()
-  let savedCoiffeur;
+  let savedCoiffeur
   request
-    .post('/coiffeurs')
-    .send(data)  
+    .post(route)
+    .send(data)
     .expect(201)
     .end((err, res) => {
       l.error(err, 'request callback error is null')
@@ -140,12 +100,11 @@ function teardown() {
       // l.deepEqual(savedCoiffeur, data, 'response body should be the same')
 
       request
-        .get(`/coiffeurs/${savedCoiffeur._id}`)
+        .get(`${route}/${savedCoiffeur._id}`)
         .expect(200)
         .end((err, res) => {
           l.error(err, 'request callback error is null')
           l.notEqual(res.body, null, "response body shouldn't be null")
-          
           l.deepEqual(savedCoiffeur.name, data.name, 'Name should be the same')
 
           const { license } = savedCoiffeur
@@ -169,10 +128,10 @@ function teardown() {
 (async function () {
   const l = await asyncTest('PUT/:id Coiffeur update record and return 200')
   const data = factory.build()
-  let savedCoiffeur;
+  let savedCoiffeur
   request
-    .post('/coiffeurs')
-    .send(data)  
+    .post(route)
+    .send(data)
     .expect(201)
     .end((err, res) => {
       l.error(err, 'request callback error is null')
@@ -189,29 +148,23 @@ function teardown() {
       delete savedCoiffeur._id
 
       request
-        .put(`/coiffeurs/${id}`)
+        .put(`${route}/${id}`)
         .send(savedCoiffeur)
         .expect(200)
         .end((err, res) => {
           l.error(err, 'request callback error is null')
           l.notEqual(res.body, null, "response body shouldn't be null")
-          
-          l.deepEqual(savedCoiffeur.name, data.name, 'Name should be the same')
 
-          const { license } = savedCoiffeur
-          l.ok(license)
-          l.equal(license.length, data.license.length, 'savedCoiffeur licence array length should be the same')
-          license.forEach(i => l.ok(data.license.indexOf(i) >= 0))
+          request
+            .get(`${route}/${id}`)
+            .expect(200)
+            .end((er, resp) => {
+              const returned = resp.body
+              l.deepEqual(returned.name, data.name, 'Retrieved Coiffeur Name should be the same')
 
-          l.deepEqual(savedCoiffeur.location, data.location, 'Location should be the same')
-
-          const { proficiencies } = savedCoiffeur
-          l.equal(proficiencies.length, data.proficiencies.length)
-          proficiencies.forEach(p => l.ok(data.proficiencies.includes(p)))
-
-          const { amenities } = savedCoiffeur
-          l.equal(amenities.length, data.amenities.length)
-          l.end()
+              l.deepEqual(savedCoiffeur.location, data.location, 'Retrieved Coiffeur Location should be the same')
+              l.end()
+            })
         })
     })
 })();
@@ -220,22 +173,22 @@ function teardown() {
   const l = await asyncTest('DELETE/:id Coiffeur delete record and return 200')
   const data = factory.build()
   request
-    .post('/coiffeurs')
-    .send(data)  
+    .post(route)
+    .send(data)
     .expect(201)
     .end((err, res) => {
       l.error(err, 'request callback error is null')
       l.notEqual(res.body, null, "response body shouldn't be null")
 
       request
-        .delete(`/coiffeurs/${res.body._id}`)
+        .delete(`${route}/${res.body._id}`)
         .expect(200)
         .end((err, resp) => {
           l.error(err, 'request callback error is null')
-          l.deepEqual(resp.body, {}, "response body should be empty")
+          l.deepEqual(resp.body, {}, 'response body should be empty')
 
           request
-            .get(`/coiffeurs/${res.body._id}`)
+            .get(`${route}/${res.body._id}`)
             .expect(404)
             .end((err, respo) => {
               l.error(err)
@@ -247,9 +200,11 @@ function teardown() {
 })();
 
 (async function () {
-  const a = await after('Teardown Collection MongoDB')
+  const a = await after('Teardown Coiffeur Data')
   await teardown()
-  await mongoose.disconnect()
+  if (require.main === module) {
+    await mongooseSetup.disconnect()
+  }
   await server.close()
   console.log('Still listening: ', server.listening)
   a.end()
