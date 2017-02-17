@@ -2,7 +2,9 @@ const faker = require('faker')
 
 class CoiffeurFactory {
   /**
-   * @return {Object}
+   * Assembles a coiffeur in a valid state and returns a result
+   * detailing errors and / or the coiffeur object
+   * @returns {Object}
    */
   static build () {
     return {
@@ -10,7 +12,7 @@ class CoiffeurFactory {
         first: faker.name.firstName(),
         last: faker.name.lastName()
       },
-      license: faker.random.words().split(' '),
+      license: faker.helpers.replaceSymbolWithNumber('####-###-####'),
       phone: [{
         type: 'home',
         number: faker.phone.phoneNumber()

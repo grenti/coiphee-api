@@ -7,7 +7,7 @@ machine:
   # Version of ruby to use
   node:
     version:
-      7.4.0
+      7.7.1
 
   # Add some environment variables
   environment:

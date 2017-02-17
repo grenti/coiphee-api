@@ -62,9 +62,8 @@ function teardown() {
         assert.deepEqual(coiffeur.name, data.name, 'Name should be the same')
 
         const { license } = coiffeur
-        assert.ok(license)
-        assert.equal(license.length, data.license.length, 'Coiffeur licence array length should be the same')
-        license.forEach(l => assert.ok(data.license.indexOf(l) >= 0))
+        assert.ok(license, 'Coiffeur license should not be empty')
+        assert.equal(license, data.license, 'Coiffeur licence should be the same')
 
         assert.deepEqual(coiffeur.location, data.location, 'Location should be the same')
 
@@ -108,9 +107,8 @@ function teardown() {
           l.deepEqual(savedCoiffeur.name, data.name, 'Name should be the same')
 
           const { license } = savedCoiffeur
-          l.ok(license)
-          l.equal(license.length, data.license.length, 'savedCoiffeur licence array length should be the same')
-          license.forEach(i => l.ok(data.license.indexOf(i) >= 0))
+          l.ok(license, 'Coiffeur license should not be empty')
+          l.equal(license, data.license, 'Coiffeur licence should be the same')
 
           l.deepEqual(savedCoiffeur.location, data.location, 'Location should be the same')
 
@@ -182,7 +180,7 @@ function teardown() {
 
       request
         .delete(`${route}/${res.body._id}`)
-        .expect(200)
+        .expect(204)
         .end((err, resp) => {
           l.error(err, 'request callback error is null')
           l.deepEqual(resp.body, {}, 'response body should be empty')

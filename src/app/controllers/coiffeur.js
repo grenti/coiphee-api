@@ -1,7 +1,6 @@
 const Coiffeur = require('../models/coiffeur')
 const Logger = require('bunyan')
 const log = new Logger({ name: 'CoiffeurController' })
-const config = require('../../config')
 const PageLinkFactory = require('./pageLinkFactory')
 
 /**
@@ -17,10 +16,20 @@ class CoiffeurController {
       page = parseInt(page || 1)
       rows = parseInt(rows || 25)
 
-      const coiffeurs = await Coiffeur.find({})
-        .skip((page * rows) - rows)
-        .limit(page * rows).exec()
-      const totalRecords = await Coiffeur.count()
+      // const coiffeurs = await Coiffeur.find({})
+      //   .skip((page * rows) - rows)
+      //   .limit(page * rows).exec()
+      // const totalRecords = await Coiffeur.count()
+
+      const results = await Promise.all([
+        Coiffeur.find({})
+          .skip((page * rows) - rows)
+          .limit(page * rows).exec(),
+        Coiffeur.count()
+      ])
+
+      const coiffeurs = results[0]
+      const totalRecords = results[1]
 
       const meta = { route: 'coiffeurs', data: coiffeurs, page, rows, count: totalRecords }
       const { data, links, header } = PageLinkFactory.build(meta)
@@ -82,7 +91,6 @@ class CoiffeurController {
           .findByIdAndUpdate({ _id: id }, ctx.request.body).exec()
         ctx.status = coiffeur ? 200 : 404
         ctx.body = coiffeur ? {} : {errors: [{message: 'Not Found'}]}
-        ctx.status = 200
       } else {
         ctx.status = 422
         ctx.body = { errors: [{ message: 'Bad Request' }] }
@@ -100,8 +108,8 @@ class CoiffeurController {
     try {
       const { id } = ctx.params
       if (id) {
-        await Coiffeur.findByIdAndRemove({ _id: id }).exec()
-        ctx.status = 200
+        const removed = await Coiffeur.findByIdAndRemove({ _id: id }).exec()
+        ctx.status = removed ? 204 : 404
       } else {
         ctx.status = 422
         ctx.body = { errors: [{message: 'Bad Request'}] }

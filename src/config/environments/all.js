@@ -5,8 +5,9 @@ const all = {
   port: process.env.PORT || 4265,
   version: 'v0',
   ssl: false,
-  secrets: {
-    session: 'demo-secret'
+  webToken: {
+    secret: 'demo-secret',
+    duration: 1440
   },
   bunyan: {
     name: 'coiphee-api',

@@ -5,6 +5,7 @@ class CoiffeurSeeder {
     return {
       name: {
         first: faker.name.firstName(),
+        middle: faker.name.firstName(),
         last: faker.name.lastName()
       },
       license: faker.helpers.replaceSymbolWithNumber('####-###-####'),

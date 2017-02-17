@@ -2,7 +2,7 @@
 filename=
 environment=
 
-if [ $1 == "" ]; then
+if [ $1 = "" ]; then
   echo "Please pass in an environment"
 else
   case $1 in

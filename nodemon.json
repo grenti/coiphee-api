@@ -4,7 +4,7 @@
     "node_modules"
   ],
   "execMap": {
-    "js": "node --harmony-async-await"
+    "js": "node"
   },
   "env": {
     "NODE_ENV": "development"

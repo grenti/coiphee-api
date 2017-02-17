@@ -4,6 +4,7 @@ const coiffeurs = require('../app/routes/coiffeurs')
 const services = require('../app/routes/services')
 const shoppes = require('../app/routes/shoppes')
 const serviceCategories = require('../app/routes/serviceCategories')
+const users = require('../app/routes/users')
 
 const registry = app => {
   app
@@ -33,6 +34,12 @@ const registry = app => {
     }))
     .use(serviceCategories.routes())
     .use(serviceCategories.allowedMethods({
+      throw: true,
+      notImplemented() { return Boom.notImplemented() },
+      methodNotAllowed() { return Boom.methodNotAllowed() }
+    }))
+    .use(users.routes())
+    .use(users.allowedMethods({
       throw: true,
       notImplemented() { return Boom.notImplemented() },
       methodNotAllowed() { return Boom.methodNotAllowed() }

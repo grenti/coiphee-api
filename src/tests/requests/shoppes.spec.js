@@ -40,7 +40,6 @@ before('Setup Shoppe Data', t => {
 })
 
 test('GET /Shoppes list should return 200', t => {
-  console.log('/GET Shoppe reached')
   request
     .get(route)
     .expect(200)

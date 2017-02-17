@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
@@ -8,7 +7,7 @@ let coiffeurSchema = new Schema({
     middle: String,
     last: { type: String, required: true }
   },
-  license: [String],
+  license: String,
   phone: [{
     type: { type: String, enum: ['cell', 'home', 'office'] },
     number: { type: String }

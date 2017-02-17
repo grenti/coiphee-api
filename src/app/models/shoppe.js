@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const { Schema } = mongoose
+const { PAYMENT_TYPES } = require('../constants/constants')
 
 const shoppeSchema = new Schema({
   name: { type: String, required: true },
@@ -10,8 +11,7 @@ const shoppeSchema = new Schema({
   }],
   paymentTypes: [{
     type: String,
-    enum: ['Visa', 'MasterCard', 'Discover',
-      'American Express', 'Cash', 'Check'],
+    enum: Object.values(PAYMENT_TYPES),
     required: true
   }],
   walkInAccepted: { type: Boolean, required: true },

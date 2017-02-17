@@ -1,6 +1,7 @@
 const body = require('koa-body')
 const Koa = require('koa')
 const app = new Koa()
+const jwt = require('koa-jwt')
 const cors = require('koa-cors')
 const path = require('path')
 const convert = require('koa-convert')
@@ -15,6 +16,8 @@ const log = bunyan.createLogger(config.bunyan)
 const mongooseSetup = require('./config/mongoose')
 mongooseSetup.connect()
 app.context.db = mongooseSetup.getMongoose()
+
+// app.use(jwt({secret: config.webToken.secret}))
 
 app.on('error', errorHandler(log))
 
