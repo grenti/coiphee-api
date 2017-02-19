@@ -2,6 +2,7 @@ const Coiffeur = require('../models/coiffeur')
 const Logger = require('bunyan')
 const log = new Logger({ name: 'CoiffeurController' })
 const config = require('../../config')
+const PageLinkFactory = require('./pageLinkFactory')
 
 /**
  * Controller providing handlers for Coiffeur routes
@@ -21,23 +22,16 @@ class CoiffeurController {
         .limit(page * rows).exec()
       const totalRecords = await Coiffeur.count()
 
-      const result = {
-        data: coiffeurs,
-        links: {
-          first: `/coiffeurs?page=1&rows=${rows}`,
-          previous: `/coiffeurs?page=${page - 1 === 0 ? page : page - 1}&offset=${rows}`,
-          next: `/coiffeurs?page=${page + 1}&rows=${rows}`,
-          last: `/coiffeurs?page=${Math.ceil(totalRecords / rows)}&offset=${rows}`
-        }
-      }
+      const meta = { route: 'coiffeurs', data: coiffeurs, page, rows, count: totalRecords }
+      const { data, links, header } = PageLinkFactory.build(meta)
 
       // TODO: display links for related entities in links, like for shoppes,
       // TODO: show links for coiffeurs and services
 
-      ctx.body = totalRecords ? result : []
+      ctx.body = totalRecords ? { data, links } : []
       ctx.set('X-Total-Count', totalRecords)
       if (totalRecords) {
-        ctx.set('Link', `<http://localhost:${config.port}/coiffeurs?page=${page + 1}&rows=${rows}>; rel="next"`)
+        ctx.set('Link', header.link)
       }
     } catch (e) {
       ctx.status = 500
