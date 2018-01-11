@@ -1,5 +1,7 @@
 # Coiphee-api
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/grenti/coiphee-api.svg)](https://greenkeeper.io/)
+
 [![CircleCI](https://circleci.com/gh/grenti/coiphee-api/tree/dev.svg?style=svg)](https://circleci.com/gh/grenti/coiphee-api/tree/dev)
 [ ![Codeship Status for grenti/coiphee-api](https://app.codeship.com/projects/e7a03ac0-c18c-0134-2d01-56b7912f3313/status?branch=dev)](https://app.codeship.com/projects/197315)
 
